@@ -178,7 +178,10 @@ import 'vs/workbench/contrib/quickaccess/browser/quickAccess.contribution';
 
 // Explorer
 import 'vs/workbench/contrib/files/browser/explorerViewlet';
-import 'vs/workbench/contrib/files/browser/fileActions.contribution';
+// NOTE@FXDK disable all file actions
+// import 'vs/workbench/contrib/files/browser/fileActions.contribution';
+// NOTE@FXDK instead, enable only what we need
+import 'vs/fxdk/browser/contrib/fileActions.contribution';
 import 'vs/workbench/contrib/files/browser/files.contribution';
 
 // Bulk Edit
@@ -246,8 +249,9 @@ import 'vs/workbench/contrib/relauncher/browser/relauncher.contribution';
 import 'vs/workbench/contrib/tasks/browser/task.contribution';
 
 // Remote
-import 'vs/workbench/contrib/remote/common/remote.contribution';
-import 'vs/workbench/contrib/remote/browser/remote';
+// NOTE@FXDK no need for this in FxDK
+// import 'vs/workbench/contrib/remote/common/remote.contribution';
+// import 'vs/workbench/contrib/remote/browser/remote';
 
 // Emmet
 import 'vs/workbench/contrib/emmet/browser/emmet.contribution';
@@ -275,7 +279,8 @@ import 'vs/workbench/contrib/themes/browser/themes.contribution';
 import 'vs/workbench/contrib/update/browser/update.contribution';
 
 // Watermark
-import 'vs/workbench/contrib/watermark/browser/watermark';
+// NOTE@FXDK disable watermark
+// import 'vs/workbench/contrib/watermark/browser/watermark';
 
 // Surveys
 import 'vs/workbench/contrib/surveys/browser/nps.contribution';
