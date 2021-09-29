@@ -309,7 +309,8 @@ export class WorkbenchKeybindingService extends AbstractKeybindingService {
 		});
 
 		this._register(browser.onDidChangeFullscreen(() => {
-			const keyboard: IKeyboard | null = (<INavigatorWithKeyboard>navigator).keyboard;
+			// NOTE@FXDK use upper level frame
+			const keyboard: IKeyboard | null = (<INavigatorWithKeyboard>window.top!.navigator).keyboard;
 
 			if (BrowserFeatures.keyboard === KeyboardSupport.None) {
 				return;

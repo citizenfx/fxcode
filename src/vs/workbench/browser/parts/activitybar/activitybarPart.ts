@@ -13,7 +13,7 @@ import { IBadge, NumberBadge } from 'vs/workbench/services/activity/common/activ
 import { IWorkbenchLayoutService, Parts, Position } from 'vs/workbench/services/layout/browser/layoutService';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 import { IDisposable, toDisposable, DisposableStore, Disposable } from 'vs/base/common/lifecycle';
-import { ToggleActivityBarVisibilityAction, ToggleSidebarPositionAction } from 'vs/workbench/browser/actions/layoutActions';
+import { ToggleActivityBarVisibilityAction/*, ToggleSidebarPositionAction*/ } from 'vs/workbench/browser/actions/layoutActions';
 import { IThemeService, IColorTheme, ThemeIcon } from 'vs/platform/theme/common/themeService';
 import { ACTIVITY_BAR_BACKGROUND, ACTIVITY_BAR_BORDER, ACTIVITY_BAR_FOREGROUND, ACTIVITY_BAR_ACTIVE_BORDER, ACTIVITY_BAR_BADGE_BACKGROUND, ACTIVITY_BAR_BADGE_FOREGROUND, ACTIVITY_BAR_INACTIVE_FOREGROUND, ACTIVITY_BAR_ACTIVE_BACKGROUND, ACTIVITY_BAR_DRAG_AND_DROP_BORDER } from 'vs/workbench/common/theme';
 import { contrastBorder } from 'vs/platform/theme/common/colorRegistry';
@@ -41,6 +41,8 @@ import { StringSHA1 } from 'vs/base/common/hash';
 import { HoverPosition } from 'vs/base/browser/ui/hover/hoverWidget';
 import { GestureEvent } from 'vs/base/browser/touch';
 import { IPaneCompositePart, IPaneCompositeSelectorPart } from 'vs/workbench/browser/parts/paneCompositePart';
+// NOTE@FXDK we need fxdk actionbar icon
+import { FxDKActivityActionViewItem, FxDKIcon } from 'vs/fxdk/workbench/fxdkMenu';
 
 interface IPlaceholderViewContainer {
 	readonly id: string;
@@ -79,7 +81,11 @@ export class ActivitybarPart extends Part implements IPaneCompositeSelectorPart 
 	private static readonly ACCOUNTS_ACTION_INDEX = 0;
 
 	private static readonly GEAR_ICON = registerIcon('settings-view-bar-icon', Codicon.settingsGear, localize('settingsViewBarIcon', "Settings icon in the view bar."));
-	private static readonly ACCOUNTS_ICON = registerIcon('accounts-view-bar-icon', Codicon.account, localize('accountsViewBarIcon', "Accounts icon in the view bar."));
+	// NOTE@FXDK we don't need account management
+	// private static readonly ACCOUNTS_ICON = registerIcon('accounts-view-bar-icon', Codicon.account, localize('accountsViewBarIcon', "Accounts icon in the view bar."));
+
+	// NOTE@FXDK but we need ours, temporarily debugBreakpointLogUnverified
+	private static readonly FXDK_ICON = registerIcon('fxdk-view-bar-icon', FxDKIcon, 'FxDK');
 
 	//#region IView
 
@@ -180,8 +186,9 @@ export class ActivitybarPart extends Part implements IPaneCompositeSelectorPart 
 				actions.push(toAction({ id: 'toggleAccountsVisibility', label: localize('accounts', "Accounts"), checked: this.accountsVisibilityPreference, run: () => this.accountsVisibilityPreference = !this.accountsVisibilityPreference }));
 				actions.push(new Separator());
 
+				// NOTE@FXDK sideBar is always on right
 				// Toggle Sidebar
-				actions.push(toAction({ id: ToggleSidebarPositionAction.ID, label: ToggleSidebarPositionAction.getLabel(this.layoutService), run: () => this.instantiationService.invokeFunction(accessor => new ToggleSidebarPositionAction().run(accessor)) }));
+				// actions.push(toAction({ id: ToggleSidebarPositionAction.ID, label: ToggleSidebarPositionAction.getLabel(this.layoutService), run: () => this.instantiationService.invokeFunction(accessor => new ToggleSidebarPositionAction().run(accessor)) }));
 
 				// Toggle Activity Bar
 				actions.push(toAction({ id: ToggleActivityBarVisibilityAction.ID, label: localize('hideActivitBar', "Hide Activity Bar"), run: () => this.instantiationService.invokeFunction(accessor => new ToggleActivityBarVisibilityAction().run(accessor)) }));
@@ -514,8 +521,14 @@ export class ActivitybarPart extends Part implements IPaneCompositeSelectorPart 
 					return this.instantiationService.createInstance(GlobalActivityActionViewItem, action as ActivityAction, () => this.compositeBar.getContextMenuActions(), (theme: IColorTheme) => this.getActivitybarItemColors(theme), this.getActivityHoverOptions());
 				}
 
-				if (action.id === 'workbench.actions.accounts') {
-					return this.instantiationService.createInstance(AccountsActivityActionViewItem, action as ActivityAction, () => this.compositeBar.getContextMenuActions(), (theme: IColorTheme) => this.getActivitybarItemColors(theme), this.getActivityHoverOptions());
+				// NOTE@FXDK we don't need account management
+				// if (action.id === 'workbench.actions.accounts') {
+				// 	return this.instantiationService.createInstance(AccountsActivityActionViewItem, action as ActivityAction, () => this.compositeBar.getContextMenuActions(), (theme: IColorTheme) => this.getActivitybarItemColors(theme), this.getActivityHoverOptions());
+				// }
+
+				// NOTE@FXDK but we do need fxdk item
+				if (action.id === 'workbench.actions.fxdk') {
+					return this.instantiationService.createInstance(FxDKActivityActionViewItem, action as ActivityAction, () => this.compositeBar.getContextMenuActions(), (theme: IColorTheme) => this.getActivitybarItemColors(theme), this.getActivityHoverOptions());
 				}
 
 				throw new Error(`No view item for action '${action.id}'`);
@@ -532,15 +545,23 @@ export class ActivitybarPart extends Part implements IPaneCompositeSelectorPart 
 			cssClass: ThemeIcon.asClassName(ActivitybarPart.GEAR_ICON)
 		}));
 
-		if (this.accountsVisibilityPreference) {
-			this.accountsActivityAction = this._register(new ActivityAction({
-				id: 'workbench.actions.accounts',
-				name: localize('accounts', "Accounts"),
-				cssClass: ThemeIcon.asClassName(ActivitybarPart.ACCOUNTS_ICON)
-			}));
+		// NOTE@FXDK we don't need account management
+		// if (this.accountsVisibilityPreference) {
+		// 	this.accountsActivityAction = this._register(new ActivityAction({
+		// 		id: 'workbench.actions.accounts',
+		// 		name: localize('accounts', "Accounts"),
+		// 		cssClass: ThemeIcon.asClassName(ActivitybarPart.ACCOUNTS_ICON)
+		// 	}));
 
-			this.globalActivityActionBar.push(this.accountsActivityAction, { index: ActivitybarPart.ACCOUNTS_ACTION_INDEX });
-		}
+		// 	this.globalActivityActionBar.push(this.accountsActivityAction, { index: ActivitybarPart.ACCOUNTS_ACTION_INDEX });
+		// }
+
+		// NOTE@FXDK but we do need fxdk item
+		this.globalActivityActionBar.push(this._register(new ActivityAction({
+			id: 'workbench.actions.fxdk',
+			name: 'FxDK',
+			cssClass: ThemeIcon.asClassName(ActivitybarPart.FXDK_ICON),
+		})));
 
 		this.globalActivityActionBar.push(this.globalActivityAction);
 	}

@@ -88,5 +88,6 @@
 		"list",
 		"git",
 		"sash"
-	]
+	],
+	"eslint.enable": false
 }

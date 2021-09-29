@@ -39,4 +39,7 @@ exports.keyboardMaps = [
 
 exports.code = require('./vs/code/buildfile').collectModules();
 
+// NOTE@FXDK our entry points
+exports.fxdkServer = require('./vs/fxdk/buildfile.server').collectModules();
+
 exports.entrypoint = createModuleDescription;

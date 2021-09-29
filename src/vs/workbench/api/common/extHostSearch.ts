@@ -46,7 +46,9 @@ export class ExtHostSearch implements ExtHostSearchShape {
 
 	registerTextSearchProvider(scheme: string, provider: vscode.TextSearchProvider): IDisposable {
 		if (this._textSearchUsedSchemes.has(scheme)) {
-			throw new Error(`a text search provider for the scheme '${scheme}' is already registered`);
+			// NOTE@FXDK just to silence error for RipgrepSearchProvider
+			return toDisposable(() => { });
+			// throw new Error(`a text search provider for the scheme '${scheme}' is already registered`);
 		}
 
 		this._textSearchUsedSchemes.add(scheme);
