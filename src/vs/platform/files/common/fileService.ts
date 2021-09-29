@@ -972,6 +972,11 @@ export class FileService extends Disposable implements IFileService {
 		this._onDidRunOperation.fire(new FileOperationEvent(resource, FileOperation.DELETE));
 	}
 
+	// NOTE@FXDK Expose this event as we need to trigger these events from FxDKShellGlue
+	public fireFileOperationEvent(event: FileOperationEvent) {
+		this._onDidRunOperation.fire(event);
+	}
+
 	//#endregion
 
 	//#region File Watching

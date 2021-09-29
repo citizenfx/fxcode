@@ -875,6 +875,11 @@ export class PersistentProtocol implements IMessagePassingProtocol {
 		return this._socket;
 	}
 
+	// NOTE@FXDK allow setting socket
+	public setSocket(socket: ISocket) {
+		this._socket = socket;
+	}
+
 	public getMillisSinceLastIncomingData(): number {
 		return Date.now() - this._socketReader.lastReadTime;
 	}

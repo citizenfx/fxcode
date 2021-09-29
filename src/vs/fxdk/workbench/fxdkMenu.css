@@ -1,0 +1,12 @@
+.codicon-fxdk-view-bar-icon::before {
+	display: block;
+	content: ' ' !important;
+
+	width: 24px;
+	height: 24px;
+
+	background-image: url(./contrib/gameView/gameView.svg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 24px;
+}

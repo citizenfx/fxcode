@@ -1,0 +1,1 @@
+export const CONSOLE_VIEW_ID = 'workbench.panel.fxdkConsole';

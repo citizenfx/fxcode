@@ -358,7 +358,9 @@ export class InstallAction extends AbstractInstallAction {
 		@IExtensionService runtimeExtensionService: IExtensionService,
 		@IWorkbenchThemeService workbenchThemeService: IWorkbenchThemeService,
 		@ILabelService labelService: ILabelService,
+		// @ts-ignore
 		@IExtensionManagementServerService private readonly extensionManagementServerService: IExtensionManagementServerService,
+		// @ts-ignore
 		@IWorkbenchExtensionManagementService private readonly workbenchExtensioManagementService: IWorkbenchExtensionManagementService,
 		@IUserDataAutoSyncEnablementService protected readonly userDataAutoSyncEnablementService: IUserDataAutoSyncEnablementService,
 		@IUserDataSyncResourceEnablementService protected readonly userDataSyncResourceEnablementService: IUserDataSyncResourceEnablementService,
@@ -377,34 +379,35 @@ export class InstallAction extends AbstractInstallAction {
 		const donotSyncLabel = localize('do no sync', "Do not sync");
 		const isMachineScoped = this.getInstallOptions().isMachineScoped;
 
+		// NOTE@FXDK: Pretend we're not in remote context
 		// When remote connection exists
-		if (this._manifest && this.extensionManagementServerService.remoteExtensionManagementServer) {
+		// if (this._manifest && this.extensionManagementServerService.remoteExtensionManagementServer) {
 
-			const server = this.workbenchExtensioManagementService.getExtensionManagementServerToInstall(this._manifest);
+		// 	const server = this.workbenchExtensioManagementService.getExtensionManagementServerToInstall(this._manifest);
 
-			if (server === this.extensionManagementServerService.remoteExtensionManagementServer) {
-				const host = this.extensionManagementServerService.remoteExtensionManagementServer.label;
-				return isMachineScoped
-					? localize({
-						key: 'install extension in remote and do not sync',
-						comment: [
-							'First placeholder is install action label.',
-							'Second placeholder is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.',
-							'Third placeholder is do not sync label.',
-						]
-					}, "{0} in {1} ({2})", baseLabel, host, donotSyncLabel)
-					: localize({
-						key: 'install extension in remote',
-						comment: [
-							'First placeholder is install action label.',
-							'Second placeholder is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.',
-						]
-					}, "{0} in {1}", baseLabel, host);
-			}
+		// 	if (server === this.extensionManagementServerService.remoteExtensionManagementServer) {
+		// 		const host = this.extensionManagementServerService.remoteExtensionManagementServer.label;
+		// 		return isMachineScoped
+		// 			? localize({
+		// 				key: 'install extension in remote and do not sync',
+		// 				comment: [
+		// 					'First placeholder is install action label.',
+		// 					'Second placeholder is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.',
+		// 					'Third placeholder is do not sync label.',
+		// 				]
+		// 			}, "{0} in {1} ({2})", baseLabel, host, donotSyncLabel)
+		// 			: localize({
+		// 				key: 'install extension in remote',
+		// 				comment: [
+		// 					'First placeholder is install action label.',
+		// 					'Second placeholder is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.',
+		// 				]
+		// 			}, "{0} in {1}", baseLabel, host);
+		// 	}
 
-			return isMachineScoped ?
-				localize('install extension locally and do not sync', "{0} Locally ({1})", baseLabel, donotSyncLabel) : localize('install extension locally', "{0} Locally", baseLabel);
-		}
+		// 	return isMachineScoped ?
+		// 		localize('install extension locally and do not sync', "{0} Locally ({1})", baseLabel, donotSyncLabel) : localize('install extension locally', "{0} Locally", baseLabel);
+		// }
 
 		return isMachineScoped ? `${baseLabel} (${donotSyncLabel})` : baseLabel;
 	}

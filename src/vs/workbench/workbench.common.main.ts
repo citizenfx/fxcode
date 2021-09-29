@@ -150,7 +150,8 @@ registerSingleton(IOpenerService, OpenerService, true);
 import 'vs/workbench/services/editor/browser/editorResolverService';
 
 // Telemetry
-import 'vs/workbench/contrib/telemetry/browser/telemetry.contribution';
+// NOTE@FXDK disable telemetry
+// import 'vs/workbench/contrib/telemetry/browser/telemetry.contribution';
 
 // Preferences
 import 'vs/workbench/contrib/preferences/browser/preferences.contribution';
@@ -180,7 +181,8 @@ import 'vs/workbench/contrib/quickaccess/browser/quickAccess.contribution';
 
 // Explorer
 import 'vs/workbench/contrib/files/browser/explorerViewlet';
-import 'vs/workbench/contrib/files/browser/fileActions.contribution';
+// NOTE@FXDK disable all file actions
+// import 'vs/workbench/contrib/files/browser/fileActions.contribution';
 import 'vs/workbench/contrib/files/browser/files.contribution';
 
 // Bulk Edit
@@ -248,8 +250,9 @@ import 'vs/workbench/contrib/relauncher/browser/relauncher.contribution';
 import 'vs/workbench/contrib/tasks/browser/task.contribution';
 
 // Remote
-import 'vs/workbench/contrib/remote/common/remote.contribution';
-import 'vs/workbench/contrib/remote/browser/remote';
+// NOTE@FXDK no need for this in FxDK
+// import 'vs/workbench/contrib/remote/common/remote.contribution';
+// import 'vs/workbench/contrib/remote/browser/remote';
 
 // Emmet
 import 'vs/workbench/contrib/emmet/browser/emmet.contribution';
@@ -274,23 +277,27 @@ import 'vs/workbench/contrib/format/browser/format.contribution';
 import 'vs/workbench/contrib/themes/browser/themes.contribution';
 
 // Update
-import 'vs/workbench/contrib/update/browser/update.contribution';
+// NOTE@FXDK disable updates
+// import 'vs/workbench/contrib/update/browser/update.contribution';
 
 // Watermark
-import 'vs/workbench/contrib/watermark/browser/watermark';
+// NOTE@FXDK disable watermark
+// import 'vs/workbench/contrib/watermark/browser/watermark';
 
 // Surveys
-import 'vs/workbench/contrib/surveys/browser/nps.contribution';
-import 'vs/workbench/contrib/surveys/browser/ces.contribution';
-import 'vs/workbench/contrib/surveys/browser/languageSurveys.contribution';
+// NOTE@FXDK disable surveys
+// import 'vs/workbench/contrib/surveys/browser/nps.contribution';
+// import 'vs/workbench/contrib/surveys/browser/ces.contribution';
+// import 'vs/workbench/contrib/surveys/browser/languageSurveys.contribution';
 
+// NOTE@FXDK disable code - oss welcome stuff
 // Welcome
-import 'vs/workbench/contrib/welcome/overlay/browser/welcomeOverlay';
-import 'vs/workbench/contrib/welcome/page/browser/welcomePage.contribution';
-import 'vs/workbench/contrib/welcome/gettingStarted/browser/gettingStarted.contribution';
-import 'vs/workbench/contrib/welcome/walkThrough/browser/walkThrough.contribution';
-import 'vs/workbench/contrib/welcome/common/viewsWelcome.contribution';
-import 'vs/workbench/contrib/welcome/common/newFile.contribution';
+// import 'vs/workbench/contrib/welcome/overlay/browser/welcomeOverlay';
+// import 'vs/workbench/contrib/welcome/page/browser/welcomePage.contribution';
+// import 'vs/workbench/contrib/welcome/gettingStarted/browser/gettingStarted.contribution';
+// import 'vs/workbench/contrib/welcome/walkThrough/browser/walkThrough.contribution';
+// import 'vs/workbench/contrib/welcome/common/viewsWelcome.contribution';
+// import 'vs/workbench/contrib/welcome/common/newFile.contribution';
 
 // Call Hierarchy
 import 'vs/workbench/contrib/callHierarchy/browser/callHierarchy.contribution';
@@ -309,7 +316,8 @@ import 'vs/workbench/contrib/languageStatus/browser/languageStatus.contribution'
 import 'vs/workbench/contrib/experiments/browser/experiments.contribution';
 
 // Send a Smile
-import 'vs/workbench/contrib/feedback/browser/feedback.contribution';
+// NOTE@FXDK disable feedback
+// import 'vs/workbench/contrib/feedback/browser/feedback.contribution';
 
 // User Data Sync
 import 'vs/workbench/contrib/userDataSync/browser/userDataSync.contribution';
@@ -328,5 +336,8 @@ import 'vs/workbench/contrib/workspaces/browser/workspaces.contribution';
 
 // List
 import 'vs/workbench/contrib/list/browser/list.contribution';
+
+// NOTE@FXDK our workbench contributions
+import 'vs/fxdk/workbench/fxdk.contribution';
 
 //#endregion

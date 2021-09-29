@@ -276,29 +276,32 @@ ${deprecatedSettingNote}
 	return telemetryDescription;
 }
 
-Registry.as<IConfigurationRegistry>(Extensions.Configuration).registerConfiguration({
-	'id': TELEMETRY_SECTION_ID,
-	'order': 110,
-	'type': 'object',
-	'title': localize('telemetryConfigurationTitle', "Telemetry"),
-	'properties': {
-		[TELEMETRY_SETTING_ID]: {
-			'type': 'string',
-			'enum': [TelemetryConfiguration.ON, TelemetryConfiguration.ERROR, TelemetryConfiguration.CRASH, TelemetryConfiguration.OFF],
-			'enumDescriptions': [
-				localize('telemetry.telemetryLevel.default', "Sends usage data, errors, and crash reports."),
-				localize('telemetry.telemetryLevel.error', "Sends general error telemetry and crash reports."),
-				localize('telemetry.telemetryLevel.crash', "Sends OS level crash reports."),
-				localize('telemetry.telemetryLevel.off', "Disables all product telemetry.")
-			],
-			'markdownDescription': getTelemetryLevelSettingDescription(),
-			'default': TelemetryConfiguration.ON,
-			'restricted': true,
-			'scope': ConfigurationScope.APPLICATION,
-			'tags': ['usesOnlineServices', 'telemetry']
-		}
-	}
-});
+// NOTE@FXDK Remove this as we don't use telemetry anyway
+void getTelemetryLevelSettingDescription();
+export type __NO_TELEMETRY = TelemetryConfiguration;
+// Registry.as<IConfigurationRegistry>(Extensions.Configuration).registerConfiguration({
+// 	'id': TELEMETRY_SECTION_ID,
+// 	'order': 110,
+// 	'type': 'object',
+// 	'title': localize('telemetryConfigurationTitle', "Telemetry"),
+// 	'properties': {
+// 		[TELEMETRY_SETTING_ID]: {
+// 			'type': 'string',
+// 			'enum': [TelemetryConfiguration.ON, TelemetryConfiguration.ERROR, TelemetryConfiguration.CRASH, TelemetryConfiguration.OFF],
+// 			'enumDescriptions': [
+// 				localize('telemetry.telemetryLevel.default', "Sends usage data, errors, and crash reports."),
+// 				localize('telemetry.telemetryLevel.error', "Sends general error telemetry and crash reports."),
+// 				localize('telemetry.telemetryLevel.crash', "Sends OS level crash reports."),
+// 				localize('telemetry.telemetryLevel.off', "Disables all product telemetry.")
+// 			],
+// 			'markdownDescription': getTelemetryLevelSettingDescription(),
+// 			'default': TelemetryConfiguration.ON,
+// 			'restricted': true,
+// 			'scope': ConfigurationScope.APPLICATION,
+// 			'tags': ['usesOnlineServices', 'telemetry']
+// 		}
+// 	}
+// });
 
 // Deprecated telemetry setting
 Registry.as<IConfigurationRegistry>(Extensions.Configuration).registerConfiguration({

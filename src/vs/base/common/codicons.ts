@@ -72,6 +72,9 @@ export class Codicon implements CSSIcon {
 	public get cssSelector() { return '.codicon.codicon-' + this.id; }
 
 
+	// NOTE@FXDK: FxDK icons
+	public static readonly fxdk = new Codicon('fxdk', { fontCharacter: '\0' });
+
 	// built-in icons, with image name
 	public static readonly add = new Codicon('add', { fontCharacter: '\\ea60' });
 	public static readonly plus = new Codicon('plus', Codicon.add.definition);

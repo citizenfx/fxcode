@@ -8,7 +8,7 @@ import Severity from 'vs/base/common/severity';
 import { MenuId, MenuRegistry, registerAction2, Action2 } from 'vs/platform/actions/common/actions';
 import { CATEGORIES } from 'vs/workbench/common/actions';
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
-import { IWorkbenchLayoutService, Parts, Position } from 'vs/workbench/services/layout/browser/layoutService';
+import { IWorkbenchLayoutService, Parts/*, Position*/ } from 'vs/workbench/services/layout/browser/layoutService';
 import { ServicesAccessor, IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 import { KeyMod, KeyCode, KeyChord } from 'vs/base/common/keyCodes';
 import { isWindows, isLinux, isWeb } from 'vs/base/common/platform';
@@ -120,6 +120,8 @@ registerAction2(class extends Action2 {
 
 // --- Toggle Sidebar Position
 
+// NOTE@FXDK sideBar is always on right
+/*
 export class ToggleSidebarPositionAction extends Action2 {
 
 	static readonly ID = 'workbench.action.toggleSidebarPosition';
@@ -238,6 +240,7 @@ MenuRegistry.appendMenuItem(MenuId.LayoutControlMenu, {
 	when: ContextKeyExpr.equals('config.workbench.sideBar.location', 'right'),
 	order: 2
 });
+*/
 
 // --- Toggle Editor Visibility
 
