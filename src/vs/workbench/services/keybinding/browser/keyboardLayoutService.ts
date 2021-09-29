@@ -25,6 +25,7 @@ import { IEnvironmentService } from 'vs/platform/environment/common/environment'
 import { Registry } from 'vs/platform/registry/common/platform';
 import { Extensions as ConfigExtensions, IConfigurationRegistry, IConfigurationNode } from 'vs/platform/configuration/common/configurationRegistry';
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
+// @ts-ignore
 import { INavigatorWithKeyboard } from 'vs/workbench/services/keybinding/browser/navigatorKeyboard';
 import { INotificationService } from 'vs/platform/notification/common/notification';
 import { ICommandService } from 'vs/platform/commands/common/commands';
@@ -82,6 +83,8 @@ export class BrowserKeyboardMapperFactoryBase {
 		this._mru = [];
 		this._activeKeymapInfo = null;
 
+		// NOTE@FXDK use our keyboardProxy as this is not allowed only from top-level context
+		const navigator = <INavigatorWithKeyboard>window.top!.navigator;
 		if ((<INavigatorWithKeyboard>navigator).keyboard && (<INavigatorWithKeyboard>navigator).keyboard.addEventListener) {
 			(<INavigatorWithKeyboard>navigator).keyboard.addEventListener!('layoutchange', () => {
 				// Update user keyboard map settings
@@ -384,6 +387,8 @@ export class BrowserKeyboardMapperFactoryBase {
 	}
 
 	private async _getBrowserKeyMapping(keyboardEvent?: IKeyboardEvent): Promise<IRawMixedKeyboardMapping | null> {
+		// NOTE@FXDK use our keyboardProxy as this is not allowed only from top-level context
+		const navigator = <INavigatorWithKeyboard>window.top!.navigator;
 		if ((navigator as any).keyboard) {
 			try {
 				return (navigator as any).keyboard.getLayoutMap().then((e: any) => {
