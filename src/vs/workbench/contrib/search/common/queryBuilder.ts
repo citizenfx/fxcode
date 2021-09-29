@@ -495,6 +495,11 @@ export class QueryBuilder {
 		const folderConfig = this.configurationService.getValue<ISearchConfiguration>({ resource: folderUri });
 		const settingExcludes = this.getExcludesForFolder(folderConfig, options);
 		const excludePattern: glob.IExpression = {
+			// NOTE@FXDK add our exclude patterns unconditionally
+			// hopefully, this is enough
+			'**/.fxdk': true,
+			'**/fxproject.json': true,
+			'**/*.fxmeta': true,
 			...(settingExcludes || {}),
 			...(thisFolderExcludeSearchPathPattern || {})
 		};
