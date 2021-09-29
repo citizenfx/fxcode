@@ -16,6 +16,7 @@ exports.dirs = [
 	'extensions/debug-server-ready',
 	'extensions/emmet',
 	'extensions/extension-editing',
+	'extensions/fxdk-ts-plugin',
 	'extensions/git',
 	'extensions/github',
 	'extensions/github-authentication',

@@ -15,7 +15,6 @@ const reporter_1 = require("./reporter");
 const util = require("./util");
 const fancyLog = require("fancy-log");
 const ansiColors = require("ansi-colors");
-const os = require("os");
 const watch = require('./watch');
 const reporter = (0, reporter_1.createReporter)();
 function getTypeScriptCompilerOptions(src) {
@@ -73,9 +72,10 @@ function createCompile(src, build, emitError) {
 }
 function compileTask(src, out, build) {
     return function () {
-        if (os.totalmem() < 4000000000) {
-            throw new Error('compilation requires 4GB of RAM');
-        }
+        // NOTE@FXDK our build machine can scale up just fine
+        // if (os.totalmem() < 4_000_000_000) {
+        // 	throw new Error('compilation requires 4GB of RAM');
+        // }
         const compile = createCompile(src, build, true);
         const srcPipe = gulp.src(`${src}/**`, { base: `${src}` });
         let generator = new MonacoGenerator(false);

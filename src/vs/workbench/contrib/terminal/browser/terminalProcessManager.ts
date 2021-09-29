@@ -213,7 +213,8 @@ export class TerminalProcessManager extends Disposable implements ITerminalProce
 			if (shellLaunchConfig.cwd && typeof shellLaunchConfig.cwd === 'object') {
 				this.remoteAuthority = getRemoteAuthority(shellLaunchConfig.cwd);
 			} else {
-				this.remoteAuthority = this._workbenchEnvironmentService.remoteAuthority;
+				// NOTE@FXDK we're trying to pretend we're not remote very hard, yeah
+				this.remoteAuthority = this._workbenchEnvironmentService.remoteAuthority || window.location.host;
 			}
 
 			// Create variable resolver
