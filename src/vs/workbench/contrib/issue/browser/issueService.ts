@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as dom from 'vs/base/browser/dom';
+// NOTE@FXDK prevent opening in new window
+// import * as dom from 'vs/base/browser/dom';
 import { normalizeGitHubUrl } from 'vs/platform/issue/common/issueReporterUtil';
 import { IExtensionManagementService, ILocalExtension } from 'vs/platform/extensionManagement/common/extensionManagement';
 import { ExtensionType } from 'vs/platform/extensions/common/extensions';
@@ -39,7 +40,9 @@ export class WebIssueService implements IWorkbenchIssueService {
 
 		if (repositoryUrl) {
 			repositoryUrl = `${repositoryUrl}?body=${encodeURIComponent(await this.getIssueDescription(selectedExtension))}&labels=web`;
-			dom.windowOpenNoOpener(repositoryUrl);
+			// NOTE@FXDK prevent opening in new window
+			// dom.windowOpenNoOpener(repositoryUrl);
+			invokeNative('openUrl', repositoryUrl);
 		} else {
 			throw new Error(`Unable to find issue reporting url for ${options.extensionId}`);
 		}
