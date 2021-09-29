@@ -34,7 +34,20 @@ export class VSBuffer {
 	static fromString(source: string, options?: { dontUseNodeBuffer?: boolean; }): VSBuffer {
 		const dontUseNodeBuffer = options?.dontUseNodeBuffer || false;
 		if (!dontUseNodeBuffer && hasBuffer) {
-			return new VSBuffer(Buffer.from(source));
+			// NOTE@FXDK our node is misbehaving allocating buffers sometimes, hopefully this won't be needed someday
+			let buf = Buffer.from(source);
+			let attempt = 1;
+
+			while (buf.readUInt8(0) !== source.charCodeAt(0)) {
+				if (attempt > 10) {
+					throw new Error(`Failed to fix buffer, string: ${source}`);
+				}
+
+				buf = Buffer.from(source);
+				attempt++;
+			}
+
+			return new VSBuffer(buf);
 		} else {
 			if (!textEncoder) {
 				textEncoder = new TextEncoder();
