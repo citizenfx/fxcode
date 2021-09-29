@@ -336,7 +336,9 @@ export class InstallAction extends AbstractInstallAction {
 		@IExtensionService runtimeExtensionService: IExtensionService,
 		@IWorkbenchThemeService workbenchThemeService: IWorkbenchThemeService,
 		@ILabelService labelService: ILabelService,
+		// @ts-ignore
 		@IExtensionManagementServerService private readonly extensionManagementServerService: IExtensionManagementServerService,
+		// @ts-ignore
 		@IWorkbenchExtensionManagementService private readonly workbenchExtensioManagementService: IWorkbenchExtensionManagementService,
 		@IUserDataAutoSyncEnablementService protected readonly userDataAutoSyncEnablementService: IUserDataAutoSyncEnablementService,
 		@IUserDataSyncResourceEnablementService protected readonly userDataSyncResourceEnablementService: IUserDataSyncResourceEnablementService,
@@ -357,22 +359,23 @@ export class InstallAction extends AbstractInstallAction {
 		const isMachineScoped = this.getInstallOptions().isMachineScoped;
 		this.label = isMachineScoped ? localize('install and do no sync', "Install (Do not sync)") : localize('install', "Install");
 
+		// NOTE@FXDK pretend we're not remote
 		// When remote connection exists
-		if (this._manifest && this.extensionManagementServerService.remoteExtensionManagementServer) {
+		// if (this._manifest && this.extensionManagementServerService.remoteExtensionManagementServer) {
 
-			const server = this.workbenchExtensioManagementService.getExtensionManagementServerToInstall(this._manifest);
+		// 	const server = this.workbenchExtensioManagementService.getExtensionManagementServerToInstall(this._manifest);
 
-			if (server === this.extensionManagementServerService.remoteExtensionManagementServer) {
-				const host = this.extensionManagementServerService.remoteExtensionManagementServer.label;
-				this.label = isMachineScoped
-					? localize({ key: 'install in remote and do not sync', comment: ['This is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.'] }, "Install in {0} (Do not sync)", host)
-					: localize({ key: 'install in remote', comment: ['This is the name of the action to install an extension in remote server. Placeholder is for the name of remote server.'] }, "Install in {0}", host);
-				return;
-			}
+		// 	if (server === this.extensionManagementServerService.remoteExtensionManagementServer) {
+		// 		const host = this.extensionManagementServerService.remoteExtensionManagementServer.label;
+		// 		this.label = isMachineScoped
+		// 			? localize({ key: 'install in remote and do not sync', comment: ['This is the name of the action to install an extension in remote server and do not sync it. Placeholder is for the name of remote server.'] }, "Install in {0} (Do not sync)", host)
+		// 			: localize({ key: 'install in remote', comment: ['This is the name of the action to install an extension in remote server. Placeholder is for the name of remote server.'] }, "Install in {0}", host);
+		// 		return;
+		// 	}
 
-			this.label = isMachineScoped ? localize('install locally and do not sync', "Install Locally (Do not sync)") : localize('install locally', "Install Locally");
-			return;
-		}
+		// 	this.label = isMachineScoped ? localize('install locally and do not sync', "Install Locally (Do not sync)") : localize('install locally', "Install Locally");
+		// 	return;
+		// }
 	}
 
 	protected getInstallOptions(): InstallOptions {

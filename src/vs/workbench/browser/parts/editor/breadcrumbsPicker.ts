@@ -322,6 +322,20 @@ class FileFilter implements ITreeFilter<IWorkspaceFolder | IFileStat> {
 			return true;
 		}
 
+		// NOTE@FXDK filter our items as well
+		if (element.resource.path.endsWith('.fxdk')) {
+			return false;
+		}
+		if (element.resource.path.endsWith('.vscode')) {
+			return false;
+		}
+		if (element.resource.path.endsWith('fxproject.json')) {
+			return false;
+		}
+		if (element.resource.path.endsWith('.fxmeta')) {
+			return false;
+		}
+
 		const expression = this._cachedExpressions.get(folder.uri.toString())!;
 		return !expression(relative(folder.uri.path, element.resource.path), basename(element.resource));
 	}

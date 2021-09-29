@@ -72,7 +72,15 @@ async function rimrafMove(path: string): Promise<void> {
 }
 
 async function rimrafUnlink(path: string): Promise<void> {
-	return Promises.rmdir(path, { recursive: true, maxRetries: 3 });
+	// NOTE@FXDK In newer versions of Node.js behaviour of fs.rmdir changed so it throws ENOENT error if no such dir exists
+	//           But vscode assumes it won't throw in such case according to older versions behaviour
+	try {
+		await Promises.rmdir(path, { recursive: true, maxRetries: 3 });
+	} catch (error) {
+		if (error.code !== 'ENOENT') {
+			throw error;
+		}
+	}
 }
 
 export function rimrafSync(path: string): void {
