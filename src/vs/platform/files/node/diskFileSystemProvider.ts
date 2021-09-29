@@ -27,6 +27,8 @@ import { IDiskFileChange, ILogMessage, IWatchRequest, toFileChanges } from 'vs/p
 import { FileWatcher as WindowsWatcherService } from 'vs/platform/files/node/watcher/win32/watcherService';
 import { ILogService, LogLevel } from 'vs/platform/log/common/log';
 import product from 'vs/platform/product/common/product';
+// NOTE@FXDK yet again, correctly processing cancelled promise
+import { isPromiseCanceledError } from 'vs/base/common/errors';
 
 export interface IWatcherOptions {
 	pollingInterval?: number;
@@ -571,7 +573,13 @@ export class DiskFileSystemProvider extends Disposable implements
 		// that supports potentially watching more than one folder at once
 		this.recursiveWatchRequestDelayer.trigger(async () => {
 			this.doRefreshRecursiveWatchers();
-		});
+		})
+			// NOTE@FXDK yet again, correctly processing cancelled promise
+			.catch((error: Error) => {
+				if (isPromiseCanceledError(error)) {
+					return;
+				}
+			});
 	}
 
 	private doRefreshRecursiveWatchers(): void {

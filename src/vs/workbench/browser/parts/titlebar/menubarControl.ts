@@ -275,6 +275,7 @@ export abstract class MenubarControl extends Disposable {
 
 	private onConfigurationUpdated(event: IConfigurationChangeEvent): void {
 		if (this.keys.some(key => event.affectsConfiguration(key))) {
+			console.log('Updating menubar', event);
 			this.updateMenubar();
 		}
 
@@ -619,8 +620,10 @@ export class CustomMenubarControl extends MenubarControl {
 			return undefined;
 		}
 
-		const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
-		return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
+		// NOTE@FXDK sideBar is always on right
+		return Direction.Left;
+		// const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
+		// return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
 	}
 
 	private onDidVisibilityChange(visible: boolean): void {

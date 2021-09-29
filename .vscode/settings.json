@@ -87,4 +87,5 @@
 	},
 	"typescript.tsc.autoDetect": "off",
 	"testing.autoRun.mode": "rerun",
+	"eslint.enable": false
 }
