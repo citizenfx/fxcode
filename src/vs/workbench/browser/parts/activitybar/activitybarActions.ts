@@ -108,7 +108,8 @@ export class ViewContainerActivityAction extends ActivityAction {
 	}
 }
 
-class MenuActivityActionViewItem extends ActivityActionViewItem {
+// NOTE@FXDK expose this for FxDK menu
+export class MenuActivityActionViewItem extends ActivityActionViewItem {
 
 	constructor(
 		private readonly menuId: MenuId,

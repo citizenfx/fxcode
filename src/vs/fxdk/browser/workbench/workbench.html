@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			performance.mark('code/didStartRenderer')
+		</script>
+		<meta charset="utf-8" />
+
+		<!-- Disable pinch zooming -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+		<style>
+			.lds-ripple {
+				display: inline-block;
+				position: relative;
+				width: 80px;
+				height: 80px;
+			}
+
+			.lds-ripple div {
+				position: absolute;
+				border: 4px solid #f40552;
+				opacity: 1;
+				border-radius: 50%;
+				animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+			}
+
+			.lds-ripple div:nth-child(2) {
+				animation-delay: -0.5s;
+			}
+
+			@keyframes lds-ripple {
+				0% {
+					top: 36px;
+					left: 36px;
+					width: 0;
+					height: 0;
+					opacity: 1;
+				}
+
+				100% {
+					top: 0px;
+					left: 0px;
+					width: 72px;
+					height: 72px;
+					opacity: 0;
+				}
+			}
+
+			#fxdk-page-loader {
+				position: fixed;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+
+				z-index: 9999;
+
+				color: hsl(60, 100%, 97%);
+				background-color: hsl(226, 23%, 11%);
+
+				user-select: none;
+
+				transition: opacity .2s ease;
+			}
+		</style>
+
+		<link data-name="vs/workbench/workbench.web.api" rel="stylesheet" href="/fxcode-static/out/vs/workbench/workbench.web.api.css">
+	</head>
+
+	<body aria-label="">
+		<div id="fxdk-page-loader">
+			<div class="lds-ripple">
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</body>
+
+	<!-- Startup (do not modify order of script tags!) -->
+	<script>
+		self.require = {
+			baseUrl: `${window.location.origin}/fxcode-static/out`,
+			recordStats: true,
+			trustedTypesPolicy: window.trustedTypes?.createPolicy('amdLoader', {
+				createScriptURL(value) {
+					if(value.startsWith(window.location.origin)) {
+						return value;
+					}
+					throw new Error(`Invalid script url: ${value}`)
+				}
+			}),
+			paths: {
+				'vscode-textmate': `${window.location.origin}/fxcode-static/node_modules/vscode-textmate/release/main`,
+				'vscode-oniguruma': `${window.location.origin}/fxcode-static/node_modules/vscode-oniguruma/release/main`,
+				'xterm': `${window.location.origin}/fxcode-static/node_modules/xterm/lib/xterm.js`,
+				'xterm-addon-search': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-search/lib/xterm-addon-search.js`,
+				'xterm-addon-unicode11': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-unicode11/lib/xterm-addon-unicode11.js`,
+				'xterm-addon-webgl': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-webgl/lib/xterm-addon-webgl.js`,
+				'tas-client-umd': `${window.location.origin}/fxcode-static/node_modules/tas-client-umd/lib/tas-client-umd.js`,
+				'iconv-lite-umd': `${window.location.origin}/fxcode-static/node_modules/iconv-lite-umd/lib/iconv-lite-umd.js`,
+				'jschardet': `${window.location.origin}/fxcode-static/node_modules/jschardet/dist/jschardet.min.js`,
+			}
+		};
+	</script>
+	<script src="/fxcode-static/out/vs/loader.js"></script>
+	<script>
+		performance.mark('code/willLoadWorkbenchMain');
+	</script>
+	<script src="/fxcode-static/out/vs/workbench/workbench.web.api.nls.js"></script>
+	<script src="/fxcode-static/out/vs/workbench/workbench.web.api.js"></script>
+	<script src="/fxcode-static/out/vs/fxdk/browser/workbench/workbench.js"></script>
+</html>

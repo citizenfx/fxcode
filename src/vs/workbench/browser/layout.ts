@@ -200,7 +200,8 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 
 		sideBar: {
 			hidden: false,
-			position: Position.LEFT,
+			// NOTE@FXDK sideBar is always on right
+			position: Position.RIGHT,
 			width: 300,
 			viewletToRestore: undefined as string | undefined
 		},
@@ -423,7 +424,11 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 		this.centerEditorLayout(this.state.editor.centered, skipLayout);
 	}
 
+	// NOTE@FXDK sideBar is always on right
 	private setSideBarPosition(position: Position): void {
+		return;
+
+		// @ts-ignore
 		const activityBar = this.getPart(Parts.ACTIVITYBAR_PART);
 		const sideBar = this.getPart(Parts.SIDEBAR_PART);
 		const auxiliaryBar = this.getPart(Parts.AUXILIARYBAR_PART);
@@ -521,8 +526,9 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 		// Sidebar visibility
 		this.state.sideBar.hidden = this.storageService.getBoolean(Storage.SIDEBAR_HIDDEN, StorageScope.WORKSPACE, this.contextService.getWorkbenchState() === WorkbenchState.EMPTY);
 
+		// NOTE@FXDK sideBar is always on right
 		// Sidebar position
-		this.state.sideBar.position = (this.configurationService.getValue<string>(Settings.SIDEBAR_POSITION) === 'right') ? Position.RIGHT : Position.LEFT;
+		this.state.sideBar.position = Position.RIGHT;
 
 		// Sidebar viewlet
 		if (!this.state.sideBar.hidden) {
@@ -1767,8 +1773,9 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 		return this.state.editor.hidden;
 	}
 
+	// NOTE@FXDK sideBar is always on right
 	getSideBarPosition(): Position {
-		return this.state.sideBar.position;
+		return Position.RIGHT;
 	}
 
 	setMenubarVisibility(visibility: MenuBarVisibility, skipLayout: boolean): void {
