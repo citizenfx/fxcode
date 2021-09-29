@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import 'vs/workbench/workbench.web.main';
-import { main } from 'vs/workbench/browser/web.main';
+// NOTE@FXDK use our main
+// import { main } from 'vs/workbench/browser/web.main';
+import { main } from 'vs/fxdk/workbench/browser/fxdk.main';
 import { UriComponents, URI } from 'vs/base/common/uri';
 import { IWebSocketFactory, IWebSocket } from 'vs/platform/remote/browser/browserSocketFactory';
 import { IURLCallbackProvider } from 'vs/workbench/services/url/browser/urlService';

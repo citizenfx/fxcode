@@ -1,0 +1,1 @@
+export const RESMON_VIEW_ID = 'workbench.panel.fxdkResmon';

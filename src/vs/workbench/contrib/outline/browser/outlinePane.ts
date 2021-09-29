@@ -214,6 +214,7 @@ export class OutlinePane extends ViewPane {
 		this._editorControlDisposables.clear();
 
 		if (!pane || !this._outlineService.canCreateOutline(pane) || !resource) {
+			console.log('HEY YOU SUPPORT OUTLINE?', pane);
 			return this._showMessage(localize('no-editor', "The active editor cannot provide outline information."));
 		}
 
