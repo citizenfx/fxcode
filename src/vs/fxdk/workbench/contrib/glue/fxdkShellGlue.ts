@@ -22,6 +22,7 @@ import { ResourceContextKey } from "vs/workbench/common/resources";
 import { getResourceForCommand } from "vs/workbench/contrib/files/browser/files";
 import { IListService } from "vs/platform/list/browser/listService";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace";
+import { TerminalCommandId } from "vs/workbench/contrib/terminal/common/terminal";
 
 export class FxDKGlue implements IFxDKGlue {
 	private readonly _onDidReadyChange = new Emitter<boolean>();
@@ -91,6 +92,11 @@ export class FxDKGlue implements IFxDKGlue {
 			FileOperation.MOVE,
 			await this.fileService.resolve(this.shellFileToResource(to), { resolveMetadata: true }),
 		));
+	}
+
+	public async revealInTerminal(entryPath: string) {
+		await this.when(LifecyclePhase.Ready);
+		this.commandService.executeCommand(TerminalCommandId.New, { cwd: entryPath });
 	}
 
 	public installExtensions(ids: string[]) {
