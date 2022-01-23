@@ -79,6 +79,7 @@ export interface IFxDKGlue {
 	readonly dataService: IFxDKDataServiceBase,
 
 	openProjectFile(filepath: string, pinned: boolean): Promise<void>,
+	findInFiles(entryPath: string): void,
 	emitFileDeleted(filepath: string): void,
 	emitFileMoved(from: string, to: string): Promise<void>,
 	installExtensions(ids: string[]): Promise<void>,

@@ -22,6 +22,7 @@ import { ResourceContextKey } from "vs/workbench/common/resources";
 import { getResourceForCommand } from "vs/workbench/contrib/files/browser/files";
 import { IListService } from "vs/platform/list/browser/listService";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace";
+import { FindInFilesActionId } from "vs/workbench/contrib/search/common/constants";
 
 export class FxDKGlue implements IFxDKGlue {
 	private readonly _onDidReadyChange = new Emitter<boolean>();
@@ -91,6 +92,11 @@ export class FxDKGlue implements IFxDKGlue {
 			FileOperation.MOVE,
 			await this.fileService.resolve(this.shellFileToResource(to), { resolveMetadata: true }),
 		));
+	}
+
+	public async findInFiles(entryPath: string) {
+		await this.when(LifecyclePhase.Ready);
+		this.commandService.executeCommand(FindInFilesActionId, { query: '', filesToInclude: entryPath });
 	}
 
 	public installExtensions(ids: string[]) {
