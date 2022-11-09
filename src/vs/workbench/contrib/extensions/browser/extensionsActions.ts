@@ -439,6 +439,8 @@ export class InstallAction extends AbstractInstallAction {
 		const donotSyncLabel = localize('do no sync', "Do not sync");
 		const isMachineScoped = this.getInstallOptions().isMachineScoped;
 
+		// NOTE@FXDK: Pretend we're not in remote context
+		/*
 		// When remote connection exists
 		if (this._manifest && this.extensionManagementServerService.remoteExtensionManagementServer) {
 
@@ -467,6 +469,7 @@ export class InstallAction extends AbstractInstallAction {
 			return isMachineScoped ?
 				localize('install extension locally and do not sync', "{0} Locally ({1})", baseLabel, donotSyncLabel) : localize('install extension locally', "{0} Locally", baseLabel);
 		}
+		*/
 
 		return isMachineScoped ? `${baseLabel} (${donotSyncLabel})` : baseLabel;
 	}

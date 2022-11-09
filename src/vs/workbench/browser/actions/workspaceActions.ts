@@ -138,6 +138,8 @@ export class OpenFileFolderAction extends Action2 {
 	}
 }
 
+// NOTE@FXDK disable workspace actions
+/*
 class OpenWorkspaceAction extends Action2 {
 
 	static readonly ID = 'workbench.action.openWorkspace';
@@ -184,6 +186,7 @@ class CloseWorkspaceAction extends Action2 {
 		return hostService.openWindow({ forceReuseWindow: true, remoteAuthority: environmentService.remoteAuthority });
 	}
 }
+*/
 
 class OpenWorkspaceConfigFileAction extends Action2 {
 
@@ -231,6 +234,8 @@ export class AddRootFolderAction extends Action2 {
 	}
 }
 
+// NOTE@FXDK disable workspace actions
+/*
 class RemoveRootFolderAction extends Action2 {
 
 	static readonly ID = 'workbench.action.removeRootFolder';
@@ -319,23 +324,27 @@ class DuplicateWorkspaceInNewWindowAction extends Action2 {
 		return hostService.openWindow([{ workspaceUri: newWorkspace.configPath }], { forceNewWindow: true, remoteAuthority });
 	}
 }
+*/
 
 // --- Actions Registration
 
-registerAction2(AddRootFolderAction);
-registerAction2(RemoveRootFolderAction);
-registerAction2(OpenFileAction);
-registerAction2(OpenFolderAction);
-registerAction2(OpenFolderViaWorkspaceAction);
-registerAction2(OpenFileFolderAction);
-registerAction2(OpenWorkspaceAction);
+// NOTE@FXDK disable workspace actions
+//registerAction2(AddRootFolderAction);
+//registerAction2(RemoveRootFolderAction);
+//registerAction2(OpenFileAction);
+//registerAction2(OpenFolderAction);
+//registerAction2(OpenFolderViaWorkspaceAction);
+//registerAction2(OpenFileFolderAction);
+//registerAction2(OpenWorkspaceAction);
 registerAction2(OpenWorkspaceConfigFileAction);
-registerAction2(CloseWorkspaceAction);
-registerAction2(SaveWorkspaceAsAction);
-registerAction2(DuplicateWorkspaceInNewWindowAction);
+//registerAction2(CloseWorkspaceAction);
+//registerAction2(SaveWorkspaceAsAction);
+//registerAction2(DuplicateWorkspaceInNewWindowAction);
 
 // --- Menu Registration
 
+// NOTE@FXDK we only disable menus as other parts rely on commands
+/*
 MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	group: '2_open',
 	command: {
@@ -435,3 +444,4 @@ MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	order: 3,
 	when: ContextKeyExpr.and(WorkbenchStateContext.isEqualTo('workspace'), EmptyWorkspaceSupportContext)
 });
+*/

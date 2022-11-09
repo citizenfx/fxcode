@@ -37,7 +37,8 @@ import { isMacintosh, isWeb } from 'vs/base/common/platform';
 import { Codicon } from 'vs/base/common/codicons';
 import { registerIcon } from 'vs/platform/theme/common/iconRegistry';
 
-const explorerViewIcon = registerIcon('explorer-view-icon', Codicon.files, localize('explorerViewIcon', 'View icon of the explorer view.'));
+// NOTE@FXDK not really an explorer now, right
+const explorerViewIcon = registerIcon('explorer-view-icon', Codicon.symbolClass, localize('explorerViewIcon', 'View icon of the explorer view.'));
 const openEditorsViewIcon = registerIcon('open-editors-view-icon', Codicon.book, localize('openEditorsIcon', 'View icon of the open editors view.'));
 
 export class ExplorerViewletViewsContribution extends Disposable implements IWorkbenchContribution {
@@ -75,15 +76,16 @@ export class ExplorerViewletViewsContribution extends Disposable implements IWor
 			viewDescriptorsToRegister.push(openEditorsViewDescriptor);
 		}
 
-		const explorerViewDescriptor = this.createExplorerViewDescriptor();
-		const registeredExplorerViewDescriptor = viewDescriptors.find(v => v.id === explorerViewDescriptor.id);
+		// NOTE@FXDK we don't need actual files explorer in FxDK
+		//const explorerViewDescriptor = this.createExplorerViewDescriptor();
+		//const registeredExplorerViewDescriptor = viewDescriptors.find(v => v.id === explorerViewDescriptor.id);
 		const emptyViewDescriptor = this.createEmptyViewDescriptor();
 		const registeredEmptyViewDescriptor = viewDescriptors.find(v => v.id === emptyViewDescriptor.id);
 
 		if (this.workspaceContextService.getWorkbenchState() === WorkbenchState.EMPTY || this.workspaceContextService.getWorkspace().folders.length === 0) {
-			if (registeredExplorerViewDescriptor) {
-				viewDescriptorsToDeregister.push(registeredExplorerViewDescriptor);
-			}
+			//if (registeredExplorerViewDescriptor) {
+			//	viewDescriptorsToDeregister.push(registeredExplorerViewDescriptor);
+			//}
 			if (!registeredEmptyViewDescriptor) {
 				viewDescriptorsToRegister.push(emptyViewDescriptor);
 			}
@@ -91,9 +93,9 @@ export class ExplorerViewletViewsContribution extends Disposable implements IWor
 			if (registeredEmptyViewDescriptor) {
 				viewDescriptorsToDeregister.push(registeredEmptyViewDescriptor);
 			}
-			if (!registeredExplorerViewDescriptor) {
-				viewDescriptorsToRegister.push(explorerViewDescriptor);
-			}
+			//if (!registeredExplorerViewDescriptor) {
+			//	viewDescriptorsToRegister.push(explorerViewDescriptor);
+			//}
 		}
 
 		if (viewDescriptorsToRegister.length) {
@@ -137,6 +139,8 @@ export class ExplorerViewletViewsContribution extends Disposable implements IWor
 		};
 	}
 
+	// NOTE@FXDK we don't need actual files explorer in FxDK
+	/*
 	private createExplorerViewDescriptor(): IViewDescriptor {
 		return {
 			id: VIEW_ID,
@@ -150,6 +154,7 @@ export class ExplorerViewletViewsContribution extends Disposable implements IWor
 			}
 		};
 	}
+	*/
 
 	private onConfigurationUpdated(e: IConfigurationChangeEvent): void {
 		if (e.affectsConfiguration('explorer.openEditors.visible')) {
@@ -279,6 +284,8 @@ export const VIEW_CONTAINER: ViewContainer = viewContainerRegistry.registerViewC
 	},
 }, ViewContainerLocation.Sidebar, { isDefault: true });
 
+// NOTE@FXDK disable all workspace actions
+/*
 const openFolder = localize('openFolder', "Open Folder");
 const addAFolder = localize('addAFolder', "add a folder");
 const openRecent = localize('openRecent', "Open Recent");
@@ -288,8 +295,11 @@ const addAFolderButton = `[${addAFolder}](command:${AddRootFolderAction.ID})`;
 const openFolderButton = `[${openFolder}](command:${(isMacintosh && !isWeb) ? OpenFileFolderAction.ID : OpenFolderAction.ID})`;
 const openFolderViaWorkspaceButton = `[${openFolder}](command:${OpenFolderViaWorkspaceAction.ID})`;
 const openRecentButton = `[${openRecent}](command:${OpenRecentAction.ID})`;
+*/
 
 const viewsRegistry = Registry.as<IViewsRegistry>(Extensions.ViewsRegistry);
+// NOTE@FXDK disable all workspace actions
+/*
 viewsRegistry.registerViewWelcomeContent(EmptyView.ID, {
 	content: localize({ key: 'noWorkspaceHelp', comment: ['Please do not translate the word "commmand", it is part of our internal syntax which must not change'] },
 		"You have not yet added a folder to the workspace.\n{0}", addRootFolderButton),
@@ -363,3 +373,4 @@ viewsRegistry.registerViewWelcomeContent(EmptyView.ID, {
 	group: ViewContentGroups.Open,
 	order: 1
 });
+*/

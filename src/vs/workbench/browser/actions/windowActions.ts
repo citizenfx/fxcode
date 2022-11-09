@@ -231,6 +231,8 @@ abstract class BaseOpenRecentAction extends Action2 {
 	}
 }
 
+// NOTE@FXDK no open recent workspace
+/*
 export class OpenRecentAction extends BaseOpenRecentAction {
 
 	static ID = 'workbench.action.openRecent';
@@ -262,6 +264,7 @@ export class OpenRecentAction extends BaseOpenRecentAction {
 		return false;
 	}
 }
+*/
 
 class QuickPickRecentAction extends BaseOpenRecentAction {
 
@@ -419,10 +422,11 @@ class BlurAction extends Action2 {
 
 // --- Actions Registration
 
-registerAction2(NewWindowAction);
+// NOTE@FXDK no open recent workspace
+//registerAction2(NewWindowAction);
 registerAction2(ToggleFullScreenAction);
 registerAction2(QuickPickRecentAction);
-registerAction2(OpenRecentAction);
+//registerAction2(OpenRecentAction);
 registerAction2(ReloadWindowAction);
 registerAction2(ShowAboutDialogAction);
 registerAction2(BlurAction);
@@ -471,9 +475,12 @@ MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	when: IsWebContext
 });
 
+// NOTE@FXDK no open recent workspace
+/*
 MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	title: localize({ key: 'miOpenRecent', comment: ['&& denotes a mnemonic'] }, "Open &&Recent"),
 	submenu: MenuId.MenubarRecentMenu,
 	group: '2_open',
 	order: 4
 });
+*/

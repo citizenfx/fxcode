@@ -635,9 +635,11 @@ export class CustomMenubarControl extends MenubarControl {
 			return undefined;
 		}
 
+		// NOTE@FXDK sideBar is always on right
+		return Direction.Left;
 		// Menu bar lives in activity bar and should flow based on its location
-		const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
-		return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
+		//const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
+		//return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
 	}
 
 	private onDidVisibilityChange(visible: boolean): void {

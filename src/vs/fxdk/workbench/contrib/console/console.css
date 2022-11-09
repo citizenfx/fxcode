@@ -1,0 +1,157 @@
+.monaco-action-bar .action-item.fxdk-console-actions {
+	display: flex;
+}
+
+.fxdk-consoles-container {
+	width: 100%;
+	height: 100%;
+
+	overflow: hidden;
+
+	display: flex;
+}
+
+.fxdk-console .color-1{color: #ff4444;}
+.fxdk-console .color-2{color: #99cc00;}
+.fxdk-console .color-3{color: #ffbb33;}
+.fxdk-console .color-4{color: #0099cc;}
+.fxdk-console .color-5{color: #33b5e5;}
+.fxdk-console .color-6{color: #aa66cc;}
+.fxdk-console .color-8{color: #cc0000;}
+.fxdk-console .color-9{color: #cc0000;}
+
+
+.fxdk-console {
+	flex-basis: 50%;
+	flex-grow: 1;
+
+	display: flex;
+	flex-direction: column;
+
+	width: 100%;
+	height: 100%;
+
+	overflow: hidden;
+}
+
+.fxdk-console-entries-container {
+	flex-grow: 1;
+
+	width: 100%;
+	height: 100%;
+
+	overflow: hidden;
+}
+.fxdk-console-entries-container > .monaco-scrollable-element {
+	width: 100%;
+	height: 100%;
+}
+.fxdk-console-entries {
+	width: 100%;
+	height: 100%;
+}
+
+.fxdk-console-entries .structured-message {
+	display: flex;
+	align-items: flex-start;
+	justify-content: stretch;
+
+	width: 100%;
+
+	user-select: text;
+	font-family: monospace;
+}
+.fxdk-console-entries .structured-message .channel {
+	flex-shrink: 0;
+
+	padding: 0 2px;
+	margin-right: 4px;
+
+	border-radius: 2px;
+
+	color: var(--channel-text-color);
+	background-color: var(--channel-color);
+}
+.fxdk-console-entries .structured-message .message {
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.fxdk-console-input-wrapper {
+	flex-shrink: 0;
+
+	position: relative;
+
+	height: 24px;
+	width: 100%;
+
+	background-image: linear-gradient(90deg, var(--input-bg), transparent);
+
+	color: var(--input-fg);
+}
+.fxdk-console-input-wrapper input {
+	display: block;
+
+	width: 100%;
+	height: 24px;
+
+	padding-left: 16px;
+
+	background: transparent;
+	color: inherit;
+	border: none;
+
+	font-family: monospace;
+
+	outline: none;
+}
+
+.fxdk-console-input-wrapper .decorator {
+	position: absolute;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	top: 0;
+	left: 0;
+
+	width: 16px;
+	height: 24px;
+
+	font-family: monospace;
+	opacity: .75;
+
+	z-index: 1;
+
+	user-select: none;
+	pointer-events: none;
+}
+
+.fxdk-console-input-wrapper .actions-container {
+	position: absolute;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	top: 0;
+	right: 0;
+
+	height: 24px;
+
+	z-index: 1;
+}
+
+.fxdk-console-input-wrapper .actions-container .action-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 22px;
+	height: 22px;
+
+	border-radius: 5px;
+
+	cursor: pointer;
+}

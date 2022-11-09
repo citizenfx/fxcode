@@ -188,6 +188,8 @@ registerAction2(MoveSidebarLeftAction);
 
 // --- Toggle Sidebar Position
 
+// NOTE@FXDK sideBar is always on right
+/*
 export class ToggleSidebarPositionAction extends Action2 {
 
 	static readonly ID = 'workbench.action.toggleSidebarPosition';
@@ -316,6 +318,7 @@ MenuRegistry.appendMenuItem(MenuId.MenubarAppearanceMenu, {
 	when: ContextKeyExpr.equals('config.workbench.sideBar.location', 'right'),
 	order: 2
 });
+*/
 
 // --- Toggle Editor Visibility
 
@@ -1188,6 +1191,8 @@ for (const { active } of [...ToggleVisibilityActions, ...MoveSideBarActions, ...
 	}
 }
 
+// NOTE@FXDK sideBar is always on right
+/*
 registerAction2(class CustomizeLayoutAction extends Action2 {
 	constructor() {
 		super({
@@ -1321,3 +1326,4 @@ registerAction2(class CustomizeLayoutAction extends Action2 {
 		quickPick.show();
 	}
 });
+*/

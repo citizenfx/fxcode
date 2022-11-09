@@ -33,7 +33,7 @@ import 'vs/workbench/browser/web.main';
 
 
 //#region --- workbench services
-
+// NOTE@FXDK disable integritiy service as it's only used in feedback and in electron contexts
 import 'vs/workbench/services/integrity/browser/integrityService';
 import 'vs/workbench/services/textMate/browser/browserTextMateService';
 import 'vs/workbench/services/search/browser/searchService';
@@ -52,6 +52,8 @@ import 'vs/workbench/services/workspaces/browser/workspaceEditingService';
 import 'vs/workbench/services/dialogs/browser/fileDialogService';
 import 'vs/workbench/services/host/browser/browserHostService';
 import 'vs/workbench/services/lifecycle/browser/lifecycleService';
+// NOTE@FXDK use our own clipboard service
+import 'vs/fxdk/workbench/services/clipboard/clipboardService';
 import 'vs/workbench/services/clipboard/browser/clipboardService';
 import 'vs/workbench/services/path/browser/pathService';
 import 'vs/workbench/services/themes/browser/browserHostColorSchemeService';
@@ -132,7 +134,8 @@ import 'vs/workbench/contrib/preferences/browser/keyboardLayoutPicker';
 import 'vs/workbench/contrib/debug/browser/extensionHostDebugService';
 
 // Welcome Banner
-import 'vs/workbench/contrib/welcomeBanner/browser/welcomeBanner.contribution';
+// NOTE@FXDK disable code - oss welcome stuff
+// import 'vs/workbench/contrib/welcome/banner/browser/welcomeBanner.contribution';
 
 // Webview
 import 'vs/workbench/contrib/webview/browser/webview.web.contribution';
