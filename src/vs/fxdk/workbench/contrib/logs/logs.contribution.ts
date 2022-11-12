@@ -1,6 +1,5 @@
 import { Registry } from 'vs/platform/registry/common/platform';
-import { CATEGORIES } from 'vs/workbench/common/actions';
-import { Action2, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
+import { MenuRegistry } from 'vs/platform/actions/common/actions';
 import { IWorkbenchContribution, IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions } from 'vs/workbench/common/contributions';
 import { IFileService, whenProviderRegistered } from 'vs/platform/files/common/files';
 import { URI } from 'vs/base/common/uri';
@@ -54,6 +53,7 @@ class FxDKLogOutputChannels extends Disposable implements IWorkbenchContribution
 
 		this.registerLogChannel(CITIZENFX_LOG_OUTPUT_CHANNEL_ID, 'CitizenFX', mostRecentLogFile.resource);
 
+		/* TODO:
 		registerAction2(class ShowCitizenFXLogAction extends Action2 {
 			constructor() {
 				super({
@@ -67,6 +67,7 @@ class FxDKLogOutputChannels extends Disposable implements IWorkbenchContribution
 				servicesAccessor.get(IOutputService).showChannel(CITIZENFX_LOG_OUTPUT_CHANNEL_ID);
 			}
 		});
+		*/
 
 		CommandsRegistry.registerCommand(CITIZENFX_SHOW_LOG_COMMAND_ID, (accessor: ServicesAccessor) => {
 			accessor.get(IOutputService).showChannel(CITIZENFX_LOG_OUTPUT_CHANNEL_ID);

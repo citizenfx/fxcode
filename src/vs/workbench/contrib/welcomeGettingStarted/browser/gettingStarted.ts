@@ -27,12 +27,7 @@ import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storag
 import { CancellationToken } from 'vs/base/common/cancellation';
 import { ConfigurationTarget, IConfigurationService } from 'vs/platform/configuration/common/configuration';
 import { ContextKeyExpr, ContextKeyExpression, IContextKeyService, RawContextKey } from 'vs/platform/contextkey/common/contextkey';
-import { IRecentFolder, IRecentlyOpened, IRecentWorkspace, isRecentFolder, isRecentWorkspace, IWorkspacesService } from 'vs/platform/workspaces/common/workspaces';
-import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
-import { onUnexpectedError } from 'vs/base/common/errors';
-import { ILabelService } from 'vs/platform/label/common/label';
-import { IWindowOpenable } from 'vs/platform/window/common/window';
-import { splitName } from 'vs/base/common/labels';
+import { IRecentFolder, IRecentWorkspace, IWorkspacesService } from 'vs/platform/workspaces/common/workspaces';
 import { IHostService } from 'vs/workbench/services/host/browser/host';
 import { isMacintosh } from 'vs/base/common/platform';
 import { Delayer, Throttler } from 'vs/base/common/async';
@@ -64,7 +59,8 @@ import { KeyCode } from 'vs/base/common/keyCodes';
 import { getTelemetryLevel } from 'vs/platform/telemetry/common/telemetryUtils';
 import { WorkbenchStateContext } from 'vs/workbench/common/contextkeys';
 import { OpenFolderViaWorkspaceAction } from 'vs/workbench/browser/actions/workspaceActions';
-import { OpenRecentAction } from 'vs/workbench/browser/actions/windowActions';
+// NOTE@FXDK no open recent workspace
+// import { OpenRecentAction } from 'vs/workbench/browser/actions/windowActions';
 import { Toggle } from 'vs/base/browser/ui/toggle/toggle';
 import { Codicon } from 'vs/base/common/codicons';
 import { restoreWalkthroughsConfigurationKey, RestoreWalkthroughsConfigurationValue } from 'vs/workbench/contrib/welcomeGettingStarted/browser/startupPage';
@@ -141,7 +137,6 @@ export class GettingStartedPage extends EditorPane {
 
 	private contextService: IContextKeyService;
 
-	private recentlyOpened: Promise<IRecentlyOpened>;
 	private hasScrolledToFirstCategory = false;
 	private recentlyOpenedList?: GettingStartedIndexList<RecentEntry>;
 	private startList?: GettingStartedIndexList<IWelcomePageStartEntry>;
@@ -178,10 +173,8 @@ export class GettingStartedPage extends EditorPane {
 		@IContextKeyService contextService: IContextKeyService,
 		@IQuickInputService private quickInputService: IQuickInputService,
 		@IWorkspacesService workspacesService: IWorkspacesService,
-		@ILabelService private readonly labelService: ILabelService,
 		@IHostService private readonly hostService: IHostService,
 		@IWebviewService private readonly webviewService: IWebviewService,
-		@IWorkspaceContextService private readonly workspaceContextService: IWorkspaceContextService,
 		@IAccessibilityService private readonly accessibilityService: IAccessibilityService,
 	) {
 
@@ -275,12 +268,6 @@ export class GettingStartedPage extends EditorPane {
 			}
 			this.updateCategoryProgress();
 		}));
-
-		this.recentlyOpened = workspacesService.getRecentlyOpened();
-		this._register(workspacesService.onDidChangeRecentlyOpened(() => {
-			this.recentlyOpened = workspacesService.getRecentlyOpened();
-			rerender();
-		}));
 	}
 
 	// remove when 'workbench.welcomePage.preferReducedMotion' deprecated
@@ -362,10 +349,13 @@ export class GettingStartedPage extends EditorPane {
 				this.runSkip();
 				break;
 			}
+			// NOTE@FXDK no open recent workspace
+			/*
 			case 'showMoreRecents': {
 				this.commandService.executeCommand(OpenRecentAction.ID);
 				break;
 			}
+			*/
 			case 'seeAllWalkthroughs': {
 				await this.openWalkthroughSelector();
 				break;
@@ -846,6 +836,8 @@ export class GettingStartedPage extends EditorPane {
 	}
 
 	private buildRecentlyOpenedList(): GettingStartedIndexList<RecentEntry> {
+		// NOTE@FXDK no open recent workspace
+		/*
 		const renderRecent = (recent: RecentEntry) => {
 			let fullPath: string;
 			let windowOpenable: IWindowOpenable;
@@ -926,6 +918,9 @@ export class GettingStartedPage extends EditorPane {
 		}).catch(onUnexpectedError);
 
 		return recentlyOpenedList;
+		*/
+
+		return null as any;
 	}
 
 	private buildStartList(): GettingStartedIndexList<IWelcomePageStartEntry> {

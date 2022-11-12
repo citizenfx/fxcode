@@ -3,6 +3,7 @@ import { URI } from 'vs/base/common/uri';
 import { transformIncoming } from 'vs/fxdk/node/util';
 import * as terminal from 'vs/workbench/contrib/terminal/common/remoteTerminalChannel';
 import { AbstractVariableResolverService } from 'vs/workbench/services/configurationResolver/common/variableResolver';
+import { IExtensionService } from 'vs/workbench/services/extensions/common/extensions';
 
 // Reference: - ../../workbench/api/common/extHostDebugService.ts
 export class FxDKVariableResolverService extends AbstractVariableResolverService {
@@ -10,6 +11,7 @@ export class FxDKVariableResolverService extends AbstractVariableResolverService
 		remoteAuthority: string,
 		args: terminal.ICreateTerminalProcessArguments,
 		env: platform.IProcessEnvironment,
+		extensionService: IExtensionService,
 	) {
 		super({
 			getFolderUri: (name: string): URI | undefined => {
@@ -57,8 +59,8 @@ export class FxDKVariableResolverService extends AbstractVariableResolverService
 				return args.resolvedVariables.selectedText;
 			},
 			getExtension: (id: string) => {
-				//return args.extensions[id];
+				return extensionService.getExtension(id);
 			},
-		}, undefined, Promise.resolve(env));
+		}, undefined, undefined, Promise.resolve(env));
 	}
 }

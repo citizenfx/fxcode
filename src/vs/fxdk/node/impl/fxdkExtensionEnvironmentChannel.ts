@@ -1,27 +1,16 @@
-import * as path from 'path';
 import { Event } from 'vs/base/common/event';
-import * as platform from 'vs/base/common/platform';
-import { URI } from 'vs/base/common/uri';
 import { transformIncomingURIs, transformOutgoingURIs } from 'vs/base/common/uriIpc';
 import { IServerChannel } from 'vs/base/parts/ipc/common/ipc';
 import { IDiagnosticInfo } from 'vs/platform/diagnostics/common/diagnostics';
-import { ExtensionIdentifier, IExtensionDescription } from 'vs/platform/extensions/common/extensions';
-import { ILogService } from 'vs/platform/log/common/log';
-import product from 'vs/platform/product/common/product';
-import { IRemoteAgentEnvironment } from 'vs/platform/remote/common/remoteAgentEnvironment';
-import { ITelemetryData, ITelemetryService, TelemetryLevel } from 'vs/platform/telemetry/common/telemetry';
-import { getTranslations } from 'vs/fxdk/node/nls';
+import { IExtensionDescription } from 'vs/platform/extensions/common/extensions';
+import { ITelemetryData, ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
 import { getUriTransformer } from 'vs/fxdk/node/util';
-import { IFxDKEnvironmentService } from 'vs/fxdk/node/impl/fxdkEnvironmentService';
 import { IScanSingleExtensionArguments } from 'vs/workbench/services/remote/common/remoteAgentEnvironmentChannel';
 
 // See ../../../workbench/services/remote/common/remoteAgentEnvironmentChannel.ts
 export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 	public constructor(
-		private readonly environment: IFxDKEnvironmentService,
-		private readonly log: ILogService,
 		private readonly telemetry: ITelemetryService,
-		private readonly connectionToken: string,
 	) { }
 
 	public listen(_: unknown, event: string): Event<any> {
@@ -32,11 +21,13 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 		const uriTranformer = getUriTransformer(context.remoteAuthority);
 
 		switch (command) {
+			/*
 			case 'getEnvironmentData':
 				return transformOutgoingURIs(
 					await this.getEnvironmentData(),
 					uriTranformer,
 				);
+			*/
 			case 'scanExtensions':
 				return transformOutgoingURIs(
 					await this.scanExtensions(args.language),
@@ -55,6 +46,7 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 		throw new Error(`Invalid call '${command}'`);
 	}
 
+	/*
 	private async getEnvironmentData(): Promise<IRemoteAgentEnvironment> {
 		return {
 			pid: process.pid,
@@ -67,14 +59,17 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 			globalStorageHome: this.environment.globalStorageHome,
 			workspaceStorageHome: this.environment.workspaceStorageHome,
 			userHome: this.environment.userHome,
+			localHistoryHome: this.environment.localHistoryHome,
 			useHostProxy: false,
 			os: platform.OS,
 			arch: process.arch,
 			marks: []
 		};
 	}
+	*/
 
 	private async scanSingleExtension(args: IScanSingleExtensionArguments) {
+		/*
 		const input = await this.getExtensionsScannerInput(
 			args.language,
 			args.isBuiltin,
@@ -83,9 +78,11 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 		);
 
 		return ExtensionScanner.scanSingleExtension(input, this.log);
+		*/
 	}
 
-	private async getExtensionsScannerInput(language: string, isBuiltin: boolean, isUnderDevelopment: boolean, path: string): Promise<ExtensionScannerInput> {
+	/*
+	private async getExtensionsScannerInput(language: string, isBuiltin: boolean, isUnderDevelopment: boolean, path: string): Promise<void> {
 		const translations = await getTranslations(language, this.environment.userDataPath);
 
 		return new ExtensionScannerInput(
@@ -100,8 +97,11 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 			translations,
 		);
 	}
+	*/
 
 	private async scanExtensions(language: string): Promise<IExtensionDescription[]> {
+		return []; // TODO: FIXME, ExtensionScanner moved into CachedExtensionScanner
+		/*
 		const translations = await getTranslations(language, this.environment.userDataPath);
 
 		const scanMultiple = (isBuiltin: boolean, isUnderDevelopment: boolean, paths: string[]): Promise<IExtensionDescription[][]> => {
@@ -145,6 +145,7 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 			});
 			return Array.from(uniqueExtensions.values());
 		});
+		*/
 	}
 
 	private getDiagnosticInfo(): Promise<IDiagnosticInfo> {
@@ -152,7 +153,8 @@ export class FxDKExtensionEnvironmentChannel implements IServerChannel {
 	}
 
 	private async disableTelemetry(): Promise<void> {
-		this.telemetry.telemetryLevel.value = TelemetryLevel.NONE;
+		//this.telemetry.telemetryLevel.value = TelemetryLevel.NONE;
+		// this has been removed, FIXME
 	}
 
 	private async logTelemetry(eventName: string, data: ITelemetryData): Promise<void> {

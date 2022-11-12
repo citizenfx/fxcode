@@ -1,5 +1,5 @@
 import { getShellApi } from 'vs/fxdk/browser/shellApi';
-import { Action2, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
+import { MenuRegistry } from 'vs/platform/actions/common/actions';
 import { CommandsRegistry } from 'vs/platform/commands/common/commands';
 import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { FxDKMenu, FxDKMenuGroup } from '../../fxdkMenu';
@@ -24,6 +24,7 @@ registerConvenienceEventAction({
 function registerConvenienceEventAction<T = undefined>({ type, title, data }: ConvenienceEventAction<T>) {
 	const commandId = `fxdk.convenience:${type}`;
 
+	/*
 	registerAction2(class extends Action2 {
 		constructor() {
 			super({
@@ -37,6 +38,7 @@ function registerConvenienceEventAction<T = undefined>({ type, title, data }: Co
 			getShellApi().events.emit(type, data);
 		}
 	});
+	*/
 
 	CommandsRegistry.registerCommand(commandId, (_accessor: ServicesAccessor) => {
 		getShellApi().events.emit(type, data);

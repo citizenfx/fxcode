@@ -21,10 +21,8 @@ import { IDialogService } from 'vs/platform/dialogs/common/dialogs';
 import { IPaneCompositePartService } from 'vs/workbench/services/panecomposite/browser/panecomposite';
 import { ToggleAuxiliaryBarAction } from 'vs/workbench/browser/parts/auxiliarybar/auxiliaryBarActions';
 import { TogglePanelAction } from 'vs/workbench/browser/parts/panel/panelActions';
-import { ICommandService } from 'vs/platform/commands/common/commands';
 import { AuxiliaryBarVisibleContext, PanelAlignmentContext, PanelVisibleContext, SideBarVisibleContext, FocusedViewContext, InEditorZenModeContext, IsCenteredLayoutContext, EditorAreaVisibleContext, IsFullscreenContext, PanelPositionContext } from 'vs/workbench/common/contextkeys';
 import { Codicon } from 'vs/base/common/codicons';
-import { DisposableStore } from 'vs/base/common/lifecycle';
 import { registerIcon } from 'vs/platform/theme/common/iconRegistry';
 import { ThemeIcon } from 'vs/platform/theme/common/themeService';
 import { ICommandActionTitle } from 'vs/platform/action/common/action';
@@ -1109,10 +1107,6 @@ registerAction2(DecreaseViewHeightAction);
 
 type ContextualLayoutVisualIcon = { iconA: ThemeIcon; iconB: ThemeIcon; whenA: ContextKeyExpression };
 type LayoutVisualIcon = ThemeIcon | ContextualLayoutVisualIcon;
-
-function isContextualLayoutVisualIcon(icon: LayoutVisualIcon): icon is ContextualLayoutVisualIcon {
-	return (icon as ContextualLayoutVisualIcon).iconA !== undefined;
-}
 
 interface CustomizeLayoutItem {
 	id: string;

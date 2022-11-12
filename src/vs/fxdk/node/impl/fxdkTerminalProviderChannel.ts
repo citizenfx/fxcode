@@ -21,6 +21,7 @@ import { CancellationToken } from 'vs/base/common/cancellation';
 import { IURITransformer, transformIncomingURIs } from 'vs/base/common/uriIpc';
 import { cloneAndChange } from 'vs/base/common/objects';
 import { URI } from 'vs/base/common/uri';
+import { IExtensionService } from 'vs/workbench/services/extensions/common/extensions';
 
 export class FxDKTerminalProviderChannel implements IServerChannel<RemoteAgentConnectionContext>, IDisposable {
 	private _lastRequestId = 0;
@@ -32,6 +33,7 @@ export class FxDKTerminalProviderChannel implements IServerChannel<RemoteAgentCo
 	public constructor(
 		private readonly logService: ILogService,
 		private readonly ptyService: PtyHostService,
+		private readonly extensionService: IExtensionService,
 	) { }
 
 	public listen(_: RemoteAgentConnectionContext, event: string, args: any): Event<any> {
@@ -100,7 +102,7 @@ export class FxDKTerminalProviderChannel implements IServerChannel<RemoteAgentCo
 			toResource: (relativePath: string) => resources.joinPath(activeWorkspaceUri, relativePath),
 		} : undefined;
 
-		const resolverService = new FxDKVariableResolverService(remoteAuthority, args, process.env);
+		const resolverService = new FxDKVariableResolverService(remoteAuthority, args, process.env, this.extensionService);
 		const resolver = terminalEnvironment.createVariableResolver(activeWorkspace, process.env, resolverService);
 
 		shellLaunchConfig.cwd = await terminalEnvironment.getCwd(

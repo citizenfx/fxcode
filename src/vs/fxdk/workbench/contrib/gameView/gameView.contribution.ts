@@ -1,5 +1,5 @@
-import { Action2, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
-import { CommandsRegistry, ICommandService } from 'vs/platform/commands/common/commands';
+import { MenuRegistry } from 'vs/platform/actions/common/actions';
+import { CommandsRegistry } from 'vs/platform/commands/common/commands';
 import { SyncDescriptor } from 'vs/platform/instantiation/common/descriptors';
 import { IInstantiationService, ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { Registry } from 'vs/platform/registry/common/platform';
@@ -23,6 +23,7 @@ Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane
 	]
 );
 
+/*
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
@@ -36,6 +37,7 @@ registerAction2(class extends Action2 {
 		accessor.get(ICommandService).executeCommand(FXDK_OPEN_GAME_VIEW_COMMAND_ID);
 	}
 });
+*/
 
 CommandsRegistry.registerCommand(FXDK_OPEN_GAME_VIEW_COMMAND_ID, (accessor: ServicesAccessor) => {
 	const editorService = accessor.get(IEditorService);

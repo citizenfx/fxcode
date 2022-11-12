@@ -1,6 +1,6 @@
 import { Emitter } from 'vs/base/common/event';
 import { Disposable, IDisposable } from 'vs/base/common/lifecycle';
-import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
+import { InstantiationType, registerSingleton } from 'vs/platform/instantiation/common/extensions';
 import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
 import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storage/common/storage';
 import { Memento, MementoObject } from 'vs/workbench/common/memento';
@@ -58,4 +58,4 @@ export class ConsoleService extends Disposable implements IConsoleService {
 	}
 }
 
-registerSingleton(IConsoleService, ConsoleService);
+registerSingleton(IConsoleService, ConsoleService, InstantiationType.Delayed);

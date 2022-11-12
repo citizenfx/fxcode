@@ -1,11 +1,11 @@
-import { Action2, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
-import { CommandsRegistry, ICommandService } from 'vs/platform/commands/common/commands';
+import { MenuRegistry } from 'vs/platform/actions/common/actions';
+import { CommandsRegistry } from 'vs/platform/commands/common/commands';
 import { SyncDescriptor } from 'vs/platform/instantiation/common/descriptors';
 import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { Registry } from 'vs/platform/registry/common/platform';
 import { ViewPaneContainer } from 'vs/workbench/browser/parts/views/viewPaneContainer';
 import { IViewContainersRegistry, ViewContainer, Extensions as ViewContainerExtensions, ViewContainerLocation, IViewsRegistry, IViewsService } from 'vs/workbench/common/views';
-import { FXDK_OPEN_GAME_CONSOLE_COMMAND_ID, FXDK_OPEN_RESMON_COMMAND_ID } from '../../fxdkCommands';
+import { FXDK_OPEN_RESMON_COMMAND_ID } from '../../fxdkCommands';
 import { FxDKMenu, FxDKMenuGroup } from '../../fxdkMenu';
 import { RESMON_VIEW_ID } from './resmon';
 import { ResmonViewPane } from './resmonView';
@@ -31,6 +31,7 @@ Registry.as<IViewsRegistry>(ViewContainerExtensions.ViewsRegistry).registerViews
 	}
 }], VIEW_CONTAINER);
 
+/* TODO:
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
@@ -44,6 +45,7 @@ registerAction2(class extends Action2 {
 		accessor.get(ICommandService).executeCommand(FXDK_OPEN_GAME_CONSOLE_COMMAND_ID);
 	}
 });
+*/
 
 CommandsRegistry.registerCommand(FXDK_OPEN_RESMON_COMMAND_ID, (accessor: ServicesAccessor) => {
 	const viewService = accessor.get(IViewsService);

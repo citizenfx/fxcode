@@ -93,7 +93,7 @@ export class ConsoleViewPane extends ViewPane {
 
 	override getActionViewItem(action: IAction): IActionViewItem | undefined {
 		if (action.id === 'fxdk.console.toggleServerConsole') {
-			return this.instantiationService.createInstance(ConsoleTogglesActionViewItem as any, action);
+			return this.instantiationService.createInstance(ConsoleTogglesActionViewItem as any, action as never);
 		}
 
 		return super.getActionViewItem(action);

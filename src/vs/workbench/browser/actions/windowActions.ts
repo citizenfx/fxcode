@@ -7,7 +7,7 @@ import { localize } from 'vs/nls';
 import { IWindowOpenable } from 'vs/platform/window/common/window';
 import { IDialogService } from 'vs/platform/dialogs/common/dialogs';
 import { MenuRegistry, MenuId, Action2, registerAction2, IAction2Options } from 'vs/platform/actions/common/actions';
-import { KeyChord, KeyCode, KeyMod } from 'vs/base/common/keyCodes';
+import { KeyCode, KeyMod } from 'vs/base/common/keyCodes';
 import { IsFullscreenContext } from 'vs/workbench/common/contextkeys';
 import { IsMacNativeContext, IsDevelopmentContext, IsWebContext, IsIOSContext } from 'vs/platform/contextkey/common/contextkeys';
 import { Categories } from 'vs/platform/action/common/actionCommonCategories';
@@ -23,7 +23,7 @@ import { URI } from 'vs/base/common/uri';
 import { getIconClasses } from 'vs/editor/common/services/getIconClasses';
 import { FileKind } from 'vs/platform/files/common/files';
 import { splitName } from 'vs/base/common/labels';
-import { isMacintosh, isWeb, isWindows } from 'vs/base/common/platform';
+import { isMacintosh } from 'vs/base/common/platform';
 import { ContextKeyExpr } from 'vs/platform/contextkey/common/contextkey';
 import { inQuickPickContext, getQuickNavigateHandler } from 'vs/workbench/browser/quickaccess';
 import { IHostService } from 'vs/workbench/services/host/browser/host';
@@ -368,37 +368,6 @@ class ShowAboutDialogAction extends Action2 {
 		const dialogService = accessor.get(IDialogService);
 
 		return dialogService.about();
-	}
-}
-
-class NewWindowAction extends Action2 {
-
-	constructor() {
-		super({
-			id: 'workbench.action.newWindow',
-			title: {
-				value: localize('newWindow', "New Window"),
-				mnemonicTitle: localize({ key: 'miNewWindow', comment: ['&& denotes a mnemonic'] }, "New &&Window"),
-				original: 'New Window'
-			},
-			f1: true,
-			keybinding: {
-				weight: KeybindingWeight.WorkbenchContrib,
-				primary: isWeb ? (isWindows ? KeyChord(KeyMod.CtrlCmd | KeyCode.KeyK, KeyMod.Shift | KeyCode.KeyN) : KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.KeyN) : KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyN,
-				secondary: isWeb ? [KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyN] : undefined
-			},
-			menu: {
-				id: MenuId.MenubarFileMenu,
-				group: '1_new',
-				order: 3
-			}
-		});
-	}
-
-	override run(accessor: ServicesAccessor): Promise<void> {
-		const hostService = accessor.get(IHostService);
-
-		return hostService.openWindow({ remoteAuthority: null });
 	}
 }
 

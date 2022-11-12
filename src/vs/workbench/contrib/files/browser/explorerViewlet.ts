@@ -16,9 +16,9 @@ import { IInstantiationService } from 'vs/platform/instantiation/common/instanti
 import { IExtensionService } from 'vs/workbench/services/extensions/common/extensions';
 import { IWorkspaceContextService, WorkbenchState } from 'vs/platform/workspace/common/workspace';
 import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
-import { IContextKeyService, IContextKey, ContextKeyExpr } from 'vs/platform/contextkey/common/contextkey';
+import { IContextKeyService, IContextKey } from 'vs/platform/contextkey/common/contextkey';
 import { IThemeService } from 'vs/platform/theme/common/themeService';
-import { IViewsRegistry, IViewDescriptor, Extensions, ViewContainer, IViewContainersRegistry, ViewContainerLocation, IViewDescriptorService, ViewContentGroups } from 'vs/workbench/common/views';
+import { IViewsRegistry, IViewDescriptor, Extensions, ViewContainer, IViewContainersRegistry, ViewContainerLocation, IViewDescriptorService } from 'vs/workbench/common/views';
 import { IContextMenuService } from 'vs/platform/contextview/browser/contextView';
 import { Disposable } from 'vs/base/common/lifecycle';
 import { IWorkbenchContribution } from 'vs/workbench/common/contributions';
@@ -29,11 +29,6 @@ import { KeyChord, KeyMod, KeyCode } from 'vs/base/common/keyCodes';
 import { Registry } from 'vs/platform/registry/common/platform';
 import { IProgressService, ProgressLocation } from 'vs/platform/progress/common/progress';
 import { SyncDescriptor } from 'vs/platform/instantiation/common/descriptors';
-import { WorkbenchStateContext, RemoteNameContext, OpenFolderWorkspaceSupportContext } from 'vs/workbench/common/contextkeys';
-import { IsWebContext } from 'vs/platform/contextkey/common/contextkeys';
-import { AddRootFolderAction, OpenFolderAction, OpenFileFolderAction, OpenFolderViaWorkspaceAction } from 'vs/workbench/browser/actions/workspaceActions';
-import { OpenRecentAction } from 'vs/workbench/browser/actions/windowActions';
-import { isMacintosh, isWeb } from 'vs/base/common/platform';
 import { Codicon } from 'vs/base/common/codicons';
 import { registerIcon } from 'vs/platform/theme/common/iconRegistry';
 

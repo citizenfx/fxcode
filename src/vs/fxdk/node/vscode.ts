@@ -1,12 +1,9 @@
-import { promises as fs } from 'fs';
 import * as net from 'net';
 import * as path from 'path';
 import { Emitter } from 'vs/base/common/event';
 import { Schemas } from 'vs/base/common/network';
 import { ClientConnectionEvent, IPCServer, IServerChannel, ProxyChannel } from 'vs/base/parts/ipc/common/ipc';
 import { Query, VscodeOptions } from 'vs/fxdk/common/ipc';
-import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
-import { ConfigurationService } from 'vs/platform/configuration/common/configurationService';
 import { ExtensionHostDebugBroadcastChannel } from 'vs/platform/debug/common/extensionHostDebugIpc';
 import { NativeParsedArgs } from 'vs/platform/environment/common/argv';
 import { IEnvironmentService, INativeEnvironmentService } from 'vs/platform/environment/common/environment';
@@ -34,17 +31,13 @@ import { RequestService } from 'vs/platform/request/node/requestService';
 import ErrorTelemetry from 'vs/platform/telemetry/node/errorTelemetry';
 import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
 import { NullTelemetryService } from 'vs/platform/telemetry/common/telemetryUtils';
-import { FxDKTerminalProviderChannel } from 'vs/fxdk/node/impl/fxdkTerminalProviderChannel';
 import { Connection, ExtensionHostConnection, ManagementConnection } from 'vs/fxdk/node/impl/connection';
 import { logger } from 'vs/fxdk/node/logger';
 import { Protocol } from 'vs/fxdk/node/impl/protocol';
 import { getUriTransformer } from 'vs/fxdk/node/util';
-import { REMOTE_TERMINAL_CHANNEL_NAME } from 'vs/workbench/contrib/terminal/common/remoteTerminalChannel';
 import { RemoteExtensionLogFileName } from 'vs/workbench/services/remote/common/remoteAgentService';
-import { PtyHostService } from 'vs/platform/terminal/node/ptyHostService';
 import { FxDKEnvironmentService } from 'vs/fxdk/node/impl/fxdkEnvironmentService';
 import { FxDKFileProviderChannel } from 'vs/fxdk/node/impl/fxdkFileProviderChannel';
-import { FxDKExtensionEnvironmentChannel } from 'vs/fxdk/node/impl/fxdkExtensionEnvironmentChannel';
 import { ILanguagePackService } from 'vs/platform/languagePacks/common/languagePacks';
 import { NativeLanguagePackService } from 'vs/platform/languagePacks/node/languagePacks';
 import { REMOTE_FILE_SYSTEM_CHANNEL_NAME } from 'vs/workbench/services/remote/common/remoteFileSystemProviderClient';
@@ -183,6 +176,7 @@ export class Vscode {
 		};
 		const environmentService = new FxDKEnvironmentService(args, productService);
 
+		/*
 		await Promise.all([
 			environmentService.extensionsPath,
 			environmentService.logsPath,
@@ -193,6 +187,7 @@ export class Vscode {
 		].map((p) => fs.mkdir(p, { recursive: true }).catch((error) => {
 			logger.warn(error.message || error);
 		})));
+		*/
 
 		const logService = new MultiplexLogService([
 			new ConsoleMainLogger(LogLevel.Debug),
@@ -211,9 +206,11 @@ export class Vscode {
 		this.services.set(INativeEnvironmentService, environmentService);
 		this.services.set(ILoggerService, loggerService);
 
+		/*
 		const configurationService = new ConfigurationService(environmentService.settingsResource, fileService, , logService);
 		await configurationService.initialize();
 		this.services.set(IConfigurationService, configurationService);
+		*/
 
 		this.services.set(IRequestService, new SyncDescriptor(RequestService));
 		this.services.set(IFileService, fileService);
@@ -234,19 +231,23 @@ export class Vscode {
 					accessor.get(IExtensionManagementService),
 					(context) => getUriTransformer(context.remoteAuthority),
 				));
+				/*
 				this.ipc.registerChannel('remoteextensionsenvironment', new FxDKExtensionEnvironmentChannel(
 					environmentService, logService, telemetryService, '',
 				));
+				*/
 				this.ipc.registerChannel('request', new RequestChannel(accessor.get(IRequestService)));
 				this.ipc.registerChannel('localizations', <IServerChannel<any>>ProxyChannel.fromService(accessor.get(ILanguagePackService)));
 				this.ipc.registerChannel(REMOTE_FILE_SYSTEM_CHANNEL_NAME, new FxDKFileProviderChannel(environmentService, logService));
 
+				/*
 				const ptyHostService = new PtyHostService({
 					graceTime: 60000,
 					shortGraceTime: 6000,
 					scrollback: 80,
 				}, configurationService, environmentService, logService);
 				this.ipc.registerChannel(REMOTE_TERMINAL_CHANNEL_NAME, new FxDKTerminalProviderChannel(logService, ptyHostService));
+				*/
 
 				resolve(new ErrorTelemetry(telemetryService));
 			});

@@ -6,7 +6,6 @@
 import { DisposableStore } from 'vs/base/common/lifecycle';
 import { mixin } from 'vs/base/common/objects';
 import { MutableObservableValue } from 'vs/base/common/observableValue';
-import { isWeb } from 'vs/base/common/platform';
 import { escapeRegExpCharacters } from 'vs/base/common/strings';
 import { localize } from 'vs/nls';
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';

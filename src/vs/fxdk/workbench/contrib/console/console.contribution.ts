@@ -1,5 +1,5 @@
 import { Action2, MenuId, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
-import { CommandsRegistry, ICommandService } from 'vs/platform/commands/common/commands';
+import { CommandsRegistry } from 'vs/platform/commands/common/commands';
 import { ContextKeyExpr } from 'vs/platform/contextkey/common/contextkey';
 import { SyncDescriptor } from 'vs/platform/instantiation/common/descriptors';
 import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
@@ -55,6 +55,7 @@ registerAction2(class extends Action2 {
 	}
 });
 
+/*
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
@@ -68,6 +69,7 @@ registerAction2(class extends Action2 {
 		accessor.get(ICommandService).executeCommand(FXDK_OPEN_GAME_CONSOLE_COMMAND_ID);
 	}
 });
+*/
 
 CommandsRegistry.registerCommand(FXDK_OPEN_GAME_CONSOLE_COMMAND_ID, (accessor: ServicesAccessor) => {
 	const viewService = accessor.get(IViewsService);

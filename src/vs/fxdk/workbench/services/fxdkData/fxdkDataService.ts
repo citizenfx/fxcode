@@ -2,7 +2,7 @@ import { Color, RGBA } from 'vs/base/common/color';
 import { toDisposable, IDisposable } from 'vs/base/common/lifecycle';
 import { ClientResourceData, GameStates, IFxDKDataServiceBase, ResourceColors, ServerResourceData, StructuredMessage } from 'vs/fxdk/browser/glue';
 import { rgbForKey } from 'vs/fxdk/common/color';
-import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
+import { InstantiationType, registerSingleton } from 'vs/platform/instantiation/common/extensions';
 import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
 
 export class SingleEventEmitter<T> {
@@ -203,4 +203,4 @@ function computeResourceColors(resourceName: string): ResourceColors {
 	};
 }
 
-registerSingleton(IFxDKDataService, FxDKDataService);
+registerSingleton(IFxDKDataService, FxDKDataService, InstantiationType.Delayed);

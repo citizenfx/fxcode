@@ -1,5 +1,5 @@
-import { Action2, MenuRegistry, registerAction2 } from 'vs/platform/actions/common/actions';
-import { CommandsRegistry, ICommandService } from 'vs/platform/commands/common/commands';
+import { MenuRegistry } from 'vs/platform/actions/common/actions';
+import { CommandsRegistry } from 'vs/platform/commands/common/commands';
 import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { FXDK_OPEN_URL } from '../../fxdkCommands';
 import { FxDKMenu, FxDKMenuGroup } from '../../fxdkMenu';
@@ -19,6 +19,7 @@ function registerLink(url: string, title: string) {
 
 	CommandsRegistry.registerCommand(commandId, () => invokeNative('openUrl', url));
 
+	/*
 	registerAction2(class extends Action2 {
 		constructor() {
 			super({
@@ -32,6 +33,7 @@ function registerLink(url: string, title: string) {
 			accessor.get(ICommandService).executeCommand(commandId);
 		}
 	});
+	*/
 
 	MenuRegistry.appendMenuItem(FxDKMenu, {
 		group: FxDKMenuGroup.Links,

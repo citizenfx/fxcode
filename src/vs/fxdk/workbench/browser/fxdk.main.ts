@@ -15,7 +15,7 @@ import { IRemoteAgentService } from 'vs/workbench/services/remote/common/remoteA
 import { IFileService } from 'vs/platform/files/common/files';
 import { FileService } from 'vs/platform/files/common/fileService';
 import { Schemas } from 'vs/base/common/network';
-import { IAnyWorkspaceIdentifier, IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { IAnyWorkspaceIdentifier, isSingleFolderWorkspaceIdentifier, isWorkspaceIdentifier, IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
 import { IWorkbenchConfigurationService } from 'vs/workbench/services/configuration/common/configuration';
 import { onUnexpectedError } from 'vs/base/common/errors';
 import { setFullscreen } from 'vs/base/browser/browser';
@@ -46,12 +46,22 @@ import { safeStringify } from 'vs/base/common/objects';
 import { RemoteAgentService } from './remoteAgentServiceImpl';
 import { ConfigurationCache } from 'vs/workbench/services/configuration/common/configurationCache';
 import { DeferredPromise } from 'vs/base/common/async';
-import { IWorkbench, IWorkbenchConstructionOptions } from 'vs/workbench/browser/web.api';
+import { ITunnel, ITunnelOptions, IWorkbench, IWorkbenchConstructionOptions } from 'vs/workbench/browser/web.api';
 import { BrowserStorageService } from 'vs/workbench/services/storage/browser/storageService';
 import { RemoteFileSystemProvider } from 'vs/workbench/test/browser/workbenchTestServices';
 import { FileUserDataProvider } from 'vs/platform/userData/common/fileUserDataProvider';
 import { IWorkspace } from 'vs/workbench/services/host/browser/browserHostService';
 import { isFolderToOpen, isWorkspaceToOpen } from 'vs/platform/window/common/window';
+import { IUserDataProfileService } from 'vs/workbench/services/userDataProfile/common/userDataProfile';
+import { IUserDataProfilesService } from 'vs/platform/userDataProfile/common/userDataProfile';
+import { IPolicyService, NullPolicyService } from 'vs/platform/policy/common/policy';
+import { TelemetryLevel } from 'vs/platform/telemetry/common/telemetry';
+import { staticObservableValue } from 'vs/base/common/observableValue';
+import { UserDataProfileService } from 'vs/workbench/services/userDataProfile/common/userDataProfileService';
+import { BrowserUserDataProfilesService } from 'vs/platform/userDataProfile/browser/userDataProfile';
+import { workspace } from 'vscode';
+import { BrowserCredentialsService } from 'vs/workbench/services/credentials/browser/credentialsService';
+import { ICredentialsService } from 'vs/platform/credentials/common/credentials';
 
 class BrowserMain extends Disposable {
 
@@ -102,18 +112,37 @@ class BrowserMain extends Disposable {
 				commands: {
 					executeCommand: (command, ...args) => commandService.executeCommand(command, ...args)
 				},
+				logger: {
+					log: (level, message) => {
+						// TODO: log
+					}
+				},
 				env: {
-					uriScheme: productService.urlProtocol,
+					getUriScheme: async () => productService.urlProtocol,
+
 					async retrievePerformanceMarks() {
 						await timerService.whenReady();
 
 						return timerService.getPerformanceMarks();
 					},
+
 					async openUri(uri: URI): Promise<boolean> {
 						return openerService.open(uri, {});
+					},
+
+					telemetryLevel: staticObservableValue(TelemetryLevel.NONE)
+				},
+				window: {
+					withProgress: (options, task) => {
+						throw new Error('Not implemented');
 					}
 				},
-				shutdown: () => lifecycleService.shutdown()
+				workspace: {
+					openTunnel: (tunnelOptions: ITunnelOptions): Promise<ITunnel> => {
+						throw new Error('Not implemented');
+					}
+				},
+				shutdown: () => lifecycleService.shutdown(),
 			};
 		});
 	}
@@ -141,7 +170,7 @@ class BrowserMain extends Disposable {
 
 		// Environment
 		const logsPath = URI.file(toLocalISOString(new Date()).replace(/-|:|\.\d+Z$/g, '')).with({ scheme: 'vscode-log' });
-		const environmentService = new BrowserWorkbenchEnvironmentService({ workspaceId: payload.id, logsPath, ...this.configuration }, productService);
+		const environmentService = new BrowserWorkbenchEnvironmentService(payload.id, logsPath, { ...this.configuration }, productService);
 		serviceCollection.set(IWorkbenchEnvironmentService, environmentService);
 
 		// Log
@@ -150,7 +179,7 @@ class BrowserMain extends Disposable {
 
 		// Remote
 		const connectionToken = environmentService.options.connectionToken || getCookieValue('vscode-tkn');
-		const remoteAuthorityResolverService = new RemoteAuthorityResolverService(connectionToken, this.configuration.resourceUriProvider);
+		const remoteAuthorityResolverService = new RemoteAuthorityResolverService(productService, connectionToken, this.configuration.resourceUriProvider);
 		serviceCollection.set(IRemoteAuthorityResolverService, remoteAuthorityResolverService);
 
 		// Signing
@@ -170,9 +199,17 @@ class BrowserMain extends Disposable {
 		const uriIdentityService = new UriIdentityService(fileService);
 		serviceCollection.set(IUriIdentityService, uriIdentityService);
 
+		// User Data Profiles
+		const userDataProfilesService = new BrowserUserDataProfilesService(environmentService, fileService, uriIdentityService, logService);
+		serviceCollection.set(IUserDataProfilesService, userDataProfilesService);
+		const lastActiveProfile = environmentService.lastActiveProfile ? userDataProfilesService.profiles.find(p => p.id === environmentService.lastActiveProfile) : undefined;
+		const currentProfile = userDataProfilesService.getOrSetProfileForWorkspace(isWorkspaceIdentifier(workspace) || isSingleFolderWorkspaceIdentifier(workspace) ? workspace : 'empty-window', lastActiveProfile ?? userDataProfilesService.defaultProfile);
+		const userDataProfileService = new UserDataProfileService(currentProfile, userDataProfilesService);
+		serviceCollection.set(IUserDataProfileService, userDataProfileService);
+
 		// Long running services (workspace, config, storage)
 		const [configurationService, storageService] = await Promise.all([
-			this.createWorkspaceService(payload, environmentService, fileService, remoteAgentService, uriIdentityService, logService).then(service => {
+			this.createWorkspaceService(payload, environmentService, userDataProfileService, userDataProfilesService, fileService, remoteAgentService, uriIdentityService, logService, new NullPolicyService()).then(service => {
 
 				// Workspace
 				serviceCollection.set(IWorkspaceContextService, service);
@@ -183,7 +220,7 @@ class BrowserMain extends Disposable {
 				return service;
 			}),
 
-			this.createStorageService(payload, logService).then(service => {
+			this.createStorageService(payload, userDataProfileService, logService).then(service => {
 
 				// Storage
 				serviceCollection.set(IStorageService, service);
@@ -211,11 +248,17 @@ class BrowserMain extends Disposable {
 		const userDataSyncStoreManagementService = new UserDataSyncStoreManagementService(productService, configurationService, storageService);
 		serviceCollection.set(IUserDataSyncStoreManagementService, userDataSyncStoreManagementService);
 
+		// Credentials Service
+		const credentialsService = new BrowserCredentialsService(environmentService, remoteAgentService, productService);
+		serviceCollection.set(ICredentialsService, credentialsService);
+
 		// Userdata Initialize Service
 		const userDataInitializationService = new UserDataInitializationService(
 			environmentService,
+			credentialsService,
 			userDataSyncStoreManagementService,
 			fileService,
+			userDataProfilesService,
 			storageService,
 			productService,
 			requestService,
@@ -247,7 +290,7 @@ class BrowserMain extends Disposable {
 		}
 
 		// Remote file system
-		this._register(RemoteFileSystemProvider.register(remoteAgentService, fileService, logService));
+		//this._register(RemoteFileSystemProvider.register(remoteAgentService, fileService, logService)); TODO: fixme
 
 		// Temporary files
 		fileService.registerProvider(Schemas.tmp, new InMemoryFileSystemProvider());
@@ -269,8 +312,8 @@ class BrowserMain extends Disposable {
 		return wtf.p;
 	}
 
-	private async createStorageService(payload: IAnyWorkspaceIdentifier, logService: ILogService): Promise<BrowserStorageService> {
-		const storageService = new BrowserStorageService(payload, logService);
+	private async createStorageService(payload: IAnyWorkspaceIdentifier, userDataProfileService: IUserDataProfileService, logService: ILogService): Promise<BrowserStorageService> {
+		const storageService = new BrowserStorageService(payload, userDataProfileService, logService);
 
 		try {
 			await storageService.initialize();
@@ -284,9 +327,19 @@ class BrowserMain extends Disposable {
 		}
 	}
 
-	private async createWorkspaceService(payload: IAnyWorkspaceIdentifier, environmentService: IWorkbenchEnvironmentService, fileService: FileService, remoteAgentService: IRemoteAgentService, uriIdentityService: IUriIdentityService, logService: ILogService): Promise<WorkspaceService> {
+	private async createWorkspaceService(
+		payload: IAnyWorkspaceIdentifier,
+		environmentService: IWorkbenchEnvironmentService,
+		userDataProfileService: IUserDataProfileService,
+		userDataProfilesService: IUserDataProfilesService,
+		fileService: FileService,
+		remoteAgentService: IRemoteAgentService,
+		uriIdentityService: IUriIdentityService,
+		logService: ILogService,
+		policyService: IPolicyService
+	): Promise<WorkspaceService> {
 		const configurationCache = new ConfigurationCache([Schemas.file, Schemas.vscodeUserData, Schemas.tmp] /* Cache all non native resources */, environmentService, fileService);
-		const workspaceService = new WorkspaceService({ remoteAuthority: this.configuration.remoteAuthority, configurationCache }, environmentService, fileService, remoteAgentService, uriIdentityService, logService);
+		const workspaceService = new WorkspaceService({ remoteAuthority: this.configuration.remoteAuthority, configurationCache }, environmentService, userDataProfileService, userDataProfilesService, fileService, remoteAgentService, uriIdentityService, logService, policyService);
 
 		try {
 			await workspaceService.initialize(payload);
