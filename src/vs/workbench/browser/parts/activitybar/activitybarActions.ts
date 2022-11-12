@@ -179,7 +179,8 @@ abstract class AbstractGlobalActivityActionViewItem extends ActivityActionViewIt
 	protected abstract run(): Promise<void>;
 }
 
-class MenuActivityActionViewItem extends AbstractGlobalActivityActionViewItem {
+// NOTE@FXDK expose this for FxDK menu
+export class MenuActivityActionViewItem extends AbstractGlobalActivityActionViewItem {
 
 	constructor(
 		private readonly menuId: MenuId,

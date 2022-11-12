@@ -21,10 +21,8 @@ import { IDialogService } from 'vs/platform/dialogs/common/dialogs';
 import { IPaneCompositePartService } from 'vs/workbench/services/panecomposite/browser/panecomposite';
 import { ToggleAuxiliaryBarAction } from 'vs/workbench/browser/parts/auxiliarybar/auxiliaryBarActions';
 import { TogglePanelAction } from 'vs/workbench/browser/parts/panel/panelActions';
-import { ICommandService } from 'vs/platform/commands/common/commands';
 import { AuxiliaryBarVisibleContext, PanelAlignmentContext, PanelVisibleContext, SideBarVisibleContext, FocusedViewContext, InEditorZenModeContext, IsCenteredLayoutContext, EditorAreaVisibleContext, IsFullscreenContext, PanelPositionContext } from 'vs/workbench/common/contextkeys';
 import { Codicon } from 'vs/base/common/codicons';
-import { DisposableStore } from 'vs/base/common/lifecycle';
 import { registerIcon } from 'vs/platform/theme/common/iconRegistry';
 import { ThemeIcon } from 'vs/platform/theme/common/themeService';
 import { ICommandActionTitle } from 'vs/platform/action/common/action';
@@ -188,6 +186,8 @@ registerAction2(MoveSidebarLeftAction);
 
 // --- Toggle Sidebar Position
 
+// NOTE@FXDK sideBar is always on right
+/*
 export class ToggleSidebarPositionAction extends Action2 {
 
 	static readonly ID = 'workbench.action.toggleSidebarPosition';
@@ -316,6 +316,7 @@ MenuRegistry.appendMenuItem(MenuId.MenubarAppearanceMenu, {
 	when: ContextKeyExpr.equals('config.workbench.sideBar.location', 'right'),
 	order: 2
 });
+*/
 
 // --- Toggle Editor Visibility
 
@@ -1107,10 +1108,6 @@ registerAction2(DecreaseViewHeightAction);
 type ContextualLayoutVisualIcon = { iconA: ThemeIcon; iconB: ThemeIcon; whenA: ContextKeyExpression };
 type LayoutVisualIcon = ThemeIcon | ContextualLayoutVisualIcon;
 
-function isContextualLayoutVisualIcon(icon: LayoutVisualIcon): icon is ContextualLayoutVisualIcon {
-	return (icon as ContextualLayoutVisualIcon).iconA !== undefined;
-}
-
 interface CustomizeLayoutItem {
 	id: string;
 	active: ContextKeyExpression;
@@ -1188,6 +1185,8 @@ for (const { active } of [...ToggleVisibilityActions, ...MoveSideBarActions, ...
 	}
 }
 
+// NOTE@FXDK sideBar is always on right
+/*
 registerAction2(class CustomizeLayoutAction extends Action2 {
 	constructor() {
 		super({
@@ -1321,3 +1320,4 @@ registerAction2(class CustomizeLayoutAction extends Action2 {
 		quickPick.show();
 	}
 });
+*/

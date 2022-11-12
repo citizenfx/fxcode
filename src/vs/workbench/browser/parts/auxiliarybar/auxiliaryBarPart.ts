@@ -27,7 +27,6 @@ import { IAction, Separator, toAction } from 'vs/base/common/actions';
 import { ToggleAuxiliaryBarAction } from 'vs/workbench/browser/parts/auxiliarybar/auxiliaryBarActions';
 import { assertIsDefined } from 'vs/base/common/types';
 import { LayoutPriority } from 'vs/base/browser/ui/splitview/splitview';
-import { ToggleSidebarPositionAction } from 'vs/workbench/browser/actions/layoutActions';
 import { ICommandService } from 'vs/platform/commands/common/commands';
 
 export class AuxiliaryBarPart extends BasePanelPart {
@@ -112,10 +111,8 @@ export class AuxiliaryBarPart extends BasePanelPart {
 	}
 
 	protected fillExtraContextMenuActions(actions: IAction[]): void {
-		const currentPositionRight = this.layoutService.getSideBarPosition() === Position.LEFT;
 		actions.push(...[
 			new Separator(),
-			toAction({ id: ToggleSidebarPositionAction.ID, label: currentPositionRight ? localize('move second side bar left', "Move Secondary Side Bar Left") : localize('move second side bar right', "Move Secondary Side Bar Right"), run: () => this.commandService.executeCommand(ToggleSidebarPositionAction.ID) }),
 			toAction({ id: ToggleAuxiliaryBarAction.ID, label: localize('hide second side bar', "Hide Secondary Side Bar"), run: () => this.commandService.executeCommand(ToggleAuxiliaryBarAction.ID) })
 		]);
 	}

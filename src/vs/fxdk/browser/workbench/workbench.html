@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			performance.mark('code/didStartRenderer')
+		</script>
+		<meta charset="utf-8" />
+
+		<!-- Disable pinch zooming -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+		<style>
+			#fxdk-page-loader {
+				position: fixed;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				gap: 8px;
+
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+
+				z-index: 999999;
+
+				font-size: 12px;
+				font-family: monospace;
+
+				color: hsla(60, 100%, 97%, .25);
+				background-color: hsl(226, 23%, 11%);
+
+				user-select: none;
+
+				transition: opacity .2s ease;
+			}
+
+			@keyframes indicator {
+				0% {
+					background-color: #f405520f;
+				}
+
+				50% {
+					background-color: #f40552;
+				}
+
+				100% {
+					background-color: #f405520f;
+				}
+			}
+
+			.fxdk-indicator {
+				flex-grow: 0;
+				flex-shrink: 0;
+
+				display: flex;
+				align-items: stretch;
+				justify-content: stretch;
+				flex-wrap: wrap;
+
+				width: 12px;
+				height: 12px;
+
+				overflow: hidden;
+
+				border-radius: 2px;
+
+				box-sizing: border-box;
+			}
+
+			.fxdk-indicator div {
+				width: 50%;
+				height: 50%;
+
+				box-sizing: border-box;
+
+				background-color: red;
+
+				animation: indicator 1s ease;
+				animation-iteration-count: infinite;
+			}
+		</style>
+
+		<link data-name="vs/workbench/workbench.web.api" rel="stylesheet" href="/fxcode-static/out/vs/workbench/workbench.web.api.css">
+	</head>
+
+	<body aria-label="">
+		<div id="fxdk-page-loader">
+			<div class="fxdk-indicator">
+				<div style="animation-delay: 0ms"></div>
+				<div style="animation-delay: 50ms"></div>
+				<div style="animation-delay: 100ms"></div>
+				<div style="animation-delay: 150ms"></div>
+			</div>
+			FXCode
+		</div>
+	</body>
+
+	<!-- Startup (do not modify order of script tags!) -->
+	<script>
+		self.require = {
+			baseUrl: `${window.location.origin}/fxcode-static/out`,
+			recordStats: true,
+			trustedTypesPolicy: window.trustedTypes?.createPolicy('amdLoader', {
+				createScriptURL(value) {
+					if(value.startsWith(window.location.origin)) {
+						return value;
+					}
+					throw new Error(`Invalid script url: ${value}`)
+				}
+			}),
+			paths: {
+				'vscode-textmate': `${window.location.origin}/fxcode-static/node_modules/vscode-textmate/release/main`,
+				'vscode-oniguruma': `${window.location.origin}/fxcode-static/node_modules/vscode-oniguruma/release/main`,
+				'xterm': `${window.location.origin}/fxcode-static/node_modules/xterm/lib/xterm.js`,
+				'xterm-addon-search': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-search/lib/xterm-addon-search.js`,
+				'xterm-addon-unicode11': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-unicode11/lib/xterm-addon-unicode11.js`,
+				'xterm-addon-webgl': `${window.location.origin}/fxcode-static/node_modules/xterm-addon-webgl/lib/xterm-addon-webgl.js`,
+				'tas-client-umd': `${window.location.origin}/fxcode-static/node_modules/tas-client-umd/lib/tas-client-umd.js`,
+				'iconv-lite-umd': `${window.location.origin}/fxcode-static/node_modules/iconv-lite-umd/lib/iconv-lite-umd.js`,
+				'jschardet': `${window.location.origin}/fxcode-static/node_modules/jschardet/dist/jschardet.min.js`,
+			}
+		};
+	</script>
+	<script src="/fxcode-static/out/vs/loader.js"></script>
+	<script>
+		performance.mark('code/willLoadWorkbenchMain');
+	</script>
+	<script src="/fxcode-static/out/vs/workbench/workbench.web.api.nls.js"></script>
+	<script src="/fxcode-static/out/vs/workbench/workbench.web.api.js"></script>
+	<script src="/fxcode-static/out/vs/fxdk/browser/workbench/workbench.js"></script>
+</html>

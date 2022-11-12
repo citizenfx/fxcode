@@ -64,7 +64,7 @@ export class TerminalProcessManager extends Disposable implements ITerminalProce
 	processState: ProcessState = ProcessState.Uninitialized;
 	ptyProcessReady: Promise<void>;
 	shellProcessId: number | undefined;
-	readonly remoteAuthority: string | undefined;
+	remoteAuthority: string | undefined;
 	os: OperatingSystem | undefined;
 	userHome: string | undefined;
 	environmentVariableInfo: IEnvironmentVariableInfo | undefined;
@@ -230,6 +230,12 @@ export class TerminalProcessManager extends Disposable implements ITerminalProce
 			this._processType = ProcessType.PsuedoTerminal;
 			newProcess = shellLaunchConfig.customPtyImplementation(this._instanceId, cols, rows);
 		} else {
+			if (shellLaunchConfig.cwd && typeof shellLaunchConfig.cwd === 'object') {
+				this.remoteAuthority = getRemoteAuthority(shellLaunchConfig.cwd);
+			} else {
+				// NOTE@FXDK we're trying to pretend we're not remote very hard, yeah
+				this.remoteAuthority = this._workbenchEnvironmentService.remoteAuthority || window.location.host;
+			}
 			const backend = await this._terminalInstanceService.getBackend(this.remoteAuthority);
 			if (!backend) {
 				throw new Error(`No terminal backend registered for remote authority '${this.remoteAuthority}'`);

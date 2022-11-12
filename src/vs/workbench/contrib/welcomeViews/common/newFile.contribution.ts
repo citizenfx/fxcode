@@ -3,25 +3,29 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { KeyMod, KeyCode } from 'vs/base/common/keyCodes';
+//import { KeyMod, KeyCode } from 'vs/base/common/keyCodes';
 import { Disposable, DisposableStore } from 'vs/base/common/lifecycle';
-import { assertIsDefined } from 'vs/base/common/types';
+//import { assertIsDefined } from 'vs/base/common/types';
 import { localize } from 'vs/nls';
-import { ILocalizedString } from 'vs/platform/action/common/action';
-import { Action2, IMenuService, MenuId, registerAction2, IMenu, MenuRegistry, MenuItemAction } from 'vs/platform/actions/common/actions';
+//import { ILocalizedString } from 'vs/platform/action/common/action';
+import { /*Action2,*/ IMenuService, MenuId, /*registerAction2,*/ IMenu, MenuRegistry, MenuItemAction } from 'vs/platform/actions/common/actions';
 import { ICommandService } from 'vs/platform/commands/common/commands';
 import { IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
-import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
+//import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
-import { KeybindingWeight } from 'vs/platform/keybinding/common/keybindingsRegistry';
+//import { KeybindingWeight } from 'vs/platform/keybinding/common/keybindingsRegistry';
 import { IQuickInputService, IQuickPickItem, IQuickPickSeparator } from 'vs/platform/quickinput/common/quickInput';
 import { Registry } from 'vs/platform/registry/common/platform';
 import { Extensions as WorkbenchExtensions, IWorkbenchContributionsRegistry } from 'vs/workbench/common/contributions';
 import { LifecyclePhase } from 'vs/workbench/services/lifecycle/common/lifecycle';
 
 const builtInSource = localize('Built-In', "Built-In");
-const category: ILocalizedString = { value: localize('Create', "Create"), original: 'Create' };
 
+// NOTE@FXDK disable workspace actions
+//const category: ILocalizedString = { value: localize('Create', "Create"), original: 'Create' };
+
+// NOTE@FXDK disable new file
+/*
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
@@ -45,6 +49,7 @@ registerAction2(class extends Action2 {
 		return assertIsDefined(NewFileTemplatesManager.Instance).run();
 	}
 });
+*/
 
 type NewFileItem = { commandID: string; title: string; from: string; group: string; commandArgs?: any };
 class NewFileTemplatesManager extends Disposable {

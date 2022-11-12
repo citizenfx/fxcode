@@ -3,8 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+// NOTE@FXDK use our main
+// import { main } from 'vs/workbench/browser/web.main';
+import { main } from 'vs/fxdk/workbench/browser/fxdk.main';
+
 import { ITunnel, ITunnelOptions, IWorkbench, IWorkbenchConstructionOptions, Menu } from 'vs/workbench/browser/web.api';
-import { BrowserMain } from 'vs/workbench/browser/web.main';
 import { URI } from 'vs/base/common/uri';
 import { IDisposable, toDisposable } from 'vs/base/common/lifecycle';
 import { CommandsRegistry } from 'vs/platform/commands/common/commands';
@@ -62,7 +65,7 @@ export function create(domElement: HTMLElement, options: IWorkbenchConstructionO
 
 	// Startup workbench and resolve waiters
 	let instantiatedWorkbench: IWorkbench | undefined = undefined;
-	new BrowserMain(domElement, options).open().then(workbench => {
+	main(domElement, options).then((workbench: any) => { // NOTE@FXDK use our main
 		instantiatedWorkbench = workbench;
 		workbenchPromise.complete(workbench);
 	});

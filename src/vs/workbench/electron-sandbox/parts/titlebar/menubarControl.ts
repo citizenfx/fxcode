@@ -3,7 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Separator } from 'vs/base/common/actions';
 import { IMenuService, IMenu, SubmenuItemAction } from 'vs/platform/actions/common/actions';
 import { IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
 import { IWorkspacesService } from 'vs/platform/workspaces/common/workspaces';
@@ -15,16 +14,15 @@ import { IAccessibilityService } from 'vs/platform/accessibility/common/accessib
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
 import { ILabelService } from 'vs/platform/label/common/label';
 import { IUpdateService } from 'vs/platform/update/common/update';
-import { IOpenRecentAction, MenubarControl } from 'vs/workbench/browser/parts/titlebar/menubarControl';
+import { MenubarControl } from 'vs/workbench/browser/parts/titlebar/menubarControl';
 import { IStorageService } from 'vs/platform/storage/common/storage';
-import { IMenubarData, IMenubarMenu, IMenubarKeybinding, IMenubarMenuItemSubmenu, IMenubarMenuItemAction, MenubarMenuItem } from 'vs/platform/menubar/common/menubar';
+import { IMenubarData, IMenubarMenu, IMenubarKeybinding, IMenubarMenuItemSubmenu, IMenubarMenuItemAction } from 'vs/platform/menubar/common/menubar';
 import { IMenubarService } from 'vs/platform/menubar/electron-sandbox/menubar';
 import { withNullAsUndefined } from 'vs/base/common/types';
 import { INativeHostService } from 'vs/platform/native/electron-sandbox/native';
 import { IHostService } from 'vs/workbench/services/host/browser/host';
 import { IPreferencesService } from 'vs/workbench/services/preferences/common/preferences';
 import { ICommandService } from 'vs/platform/commands/common/commands';
-import { OpenRecentAction } from 'vs/workbench/browser/actions/windowActions';
 import { isICommandActionToggleInfo } from 'vs/platform/action/common/action';
 
 export class NativeMenubarControl extends MenubarControl {
@@ -135,10 +133,13 @@ export class NativeMenubarControl extends MenubarControl {
 
 					menuToDispose.dispose();
 				} else {
+					// NOTE@FXDK Disable OpenRecentAction
+					/*
 					if (menuItem.id === OpenRecentAction.ID) {
 						const actions = this.getOpenRecentActions().map(this.transformOpenRecentAction);
 						menuToPopulate.items.push(...actions);
 					}
+					*/
 
 					const menubarMenuItem: IMenubarMenuItemAction = {
 						id: menuItem.id,
@@ -168,20 +169,6 @@ export class NativeMenubarControl extends MenubarControl {
 		if (menuToPopulate.items.length > 0) {
 			menuToPopulate.items.pop();
 		}
-	}
-
-	private transformOpenRecentAction(action: Separator | IOpenRecentAction): MenubarMenuItem {
-		if (action instanceof Separator) {
-			return { id: 'vscode.menubar.separator' };
-		}
-
-		return {
-			id: action.id,
-			uri: action.uri,
-			remoteAuthority: action.remoteAuthority,
-			enabled: action.enabled,
-			label: action.label
-		};
 	}
 
 	private getAdditionalKeybindings(): { [id: string]: IMenubarKeybinding } {

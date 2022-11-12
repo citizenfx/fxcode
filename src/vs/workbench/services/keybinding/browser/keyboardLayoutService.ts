@@ -82,6 +82,8 @@ export class BrowserKeyboardMapperFactoryBase {
 		this._mru = [];
 		this._activeKeymapInfo = null;
 
+		// NOTE@FXDK use our keyboardProxy as this is not allowed only from top-level context
+		const navigator = <INavigatorWithKeyboard>window.top!.navigator;
 		if ((<INavigatorWithKeyboard>navigator).keyboard && (<INavigatorWithKeyboard>navigator).keyboard.addEventListener) {
 			(<INavigatorWithKeyboard>navigator).keyboard.addEventListener!('layoutchange', () => {
 				// Update user keyboard map settings
@@ -384,6 +386,8 @@ export class BrowserKeyboardMapperFactoryBase {
 	}
 
 	private async _getBrowserKeyMapping(keyboardEvent?: IKeyboardEvent): Promise<IRawMixedKeyboardMapping | null> {
+		// NOTE@FXDK use our keyboardProxy as this is not allowed only from top-level context
+		const navigator = <INavigatorWithKeyboard>window.top!.navigator;
 		if ((navigator as any).keyboard) {
 			try {
 				return (navigator as any).keyboard.getLayoutMap().then((e: any) => {

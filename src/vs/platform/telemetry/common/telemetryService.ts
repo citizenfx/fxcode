@@ -6,7 +6,6 @@
 import { DisposableStore } from 'vs/base/common/lifecycle';
 import { mixin } from 'vs/base/common/objects';
 import { MutableObservableValue } from 'vs/base/common/observableValue';
-import { isWeb } from 'vs/base/common/platform';
 import { escapeRegExpCharacters } from 'vs/base/common/strings';
 import { localize } from 'vs/nls';
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
@@ -150,6 +149,9 @@ export class TelemetryService implements ITelemetryService {
 	}
 }
 
+// NOTE@FXDK Remove this as we don't use telemetry anyway
+export type __NO_TELEMETRY = TelemetryConfiguration;
+/*
 function getTelemetryLevelSettingDescription(): string {
 	const telemetryText = localize('telemetry.telemetryLevelMd', "Controls {0} telemetry, first-party extension telemetry and participating third-party extension telemetry. Some third party extensions might not respect this setting. Consult the specific extension's documentation to be sure. Telemetry helps us better understand how {0} is performing, where improvements need to be made, and how features are being used.", product.nameLong);
 	const externalLinksStatement = !product.privacyStatementUrl ?
@@ -187,6 +189,7 @@ ${deprecatedSettingNote}
 
 	return telemetryDescription;
 }
+*/
 
 Registry.as<IConfigurationRegistry>(Extensions.Configuration).registerConfiguration({
 	'id': TELEMETRY_SECTION_ID,
@@ -203,7 +206,7 @@ Registry.as<IConfigurationRegistry>(Extensions.Configuration).registerConfigurat
 				localize('telemetry.telemetryLevel.crash', "Sends OS level crash reports."),
 				localize('telemetry.telemetryLevel.off', "Disables all product telemetry.")
 			],
-			'markdownDescription': getTelemetryLevelSettingDescription(),
+			'markdownDescription': localize('enableTelemetryDeprecated', "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated in favor of the {0} setting.", `\`#${TELEMETRY_SETTING_ID}#\``),
 			'default': TelemetryConfiguration.ON,
 			'restricted': true,
 			'scope': ConfigurationScope.APPLICATION,

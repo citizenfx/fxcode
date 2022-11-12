@@ -80,4 +80,12 @@ exports.code = [
 	createModuleDescription('vs/code/electron-sandbox/processExplorer/processExplorerMain')
 ];
 
+// NOTE@FXDK our entry points
+exports.fxdkServer = [
+	// createModuleDescription('vs/workbench/services/search/node/searchApp'),
+	createModuleDescription('vs/platform/files/node/watcher/parcel/watcherApp'),
+	createModuleDescription('vs/platform/terminal/node/ptyHostMain'),
+	createModuleDescription('vs/workbench/services/extensions/node/extensionHostProcess'),
+];
+
 exports.entrypoint = createModuleDescription;

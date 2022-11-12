@@ -39,7 +39,6 @@ import { KeybindingWeight } from 'vs/platform/keybinding/common/keybindingsRegis
 import { IsMacNativeContext, IsWebContext } from 'vs/platform/contextkey/common/contextkeys';
 import { ICommandService } from 'vs/platform/commands/common/commands';
 import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
-import { OpenRecentAction } from 'vs/workbench/browser/actions/windowActions';
 import { isICommandActionToggleInfo } from 'vs/platform/action/common/action';
 
 export type IOpenRecentAction = IAction & { uri: URI; remoteAuthority?: string };
@@ -600,10 +599,6 @@ export class CustomMenubarControl extends MenubarControl {
 
 	private insertActionsBefore(nextAction: IAction, target: IAction[]): void {
 		switch (nextAction.id) {
-			case OpenRecentAction.ID:
-				target.push(...this.getOpenRecentActions());
-				break;
-
 			case 'workbench.action.showAboutDialog':
 				if (!isMacintosh && !isWeb) {
 					const updateAction = this.getUpdateAction();
@@ -635,9 +630,11 @@ export class CustomMenubarControl extends MenubarControl {
 			return undefined;
 		}
 
+		// NOTE@FXDK sideBar is always on right
+		return Direction.Left;
 		// Menu bar lives in activity bar and should flow based on its location
-		const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
-		return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
+		//const currentSidebarLocation = this.configurationService.getValue<string>('workbench.sideBar.location');
+		//return currentSidebarLocation === 'right' ? Direction.Left : Direction.Right;
 	}
 
 	private onDidVisibilityChange(visible: boolean): void {

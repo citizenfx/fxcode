@@ -463,9 +463,13 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 				this.setStatusBarHidden(change.value as boolean);
 			}
 
+			// NOTE@FXDK sideBar is always on right
+			/*
 			if (change.key === LayoutStateKeys.SIDEBAR_POSITON) {
 				this.setSideBarPosition(change.value as Position);
 			}
+			*/
+			this.setSideBarPosition(Position.RIGHT);
 
 			if (change.key === LayoutStateKeys.PANEL_POSITION) {
 				this.setPanelPosition(change.value as Position);
@@ -1847,7 +1851,8 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 	}
 
 	getSideBarPosition(): Position {
-		return this.stateModel.getRuntimeValue(LayoutStateKeys.SIDEBAR_POSITON);
+		// NOTE@FXDK sideBar is always on right
+		return Position.RIGHT;
 	}
 
 	getPanelAlignment(): PanelAlignment {
